@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="الاشارات">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <title>بحث الاشارات</title>
 <style>
@@ -29,7 +29,7 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .ndot.on{background:#3b82f6;box-shadow:0 0 6px #3b82f6}
 .rtime-top{font-size:11px;color:#334155;font-weight:500}
 
-/* ── SEARCH — أول حاجة ── */
+/* ── SEARCH ── */
 .search-box{position:relative;margin-bottom:10px}
 .search-box input{width:100%;padding:14px 48px 14px 14px;font-size:16px;font-family:'Cairo',inherit;font-weight:600;border:1.5px solid #1e2d4a;border-radius:14px;background:#0f1829;color:#ffffff;outline:none;direction:rtl;transition:border-color 0.2s}
 .search-box input:focus{border-color:#3b82f6;background:#111827}
@@ -49,14 +49,43 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .card-name{font-size:16px;font-weight:700;color:#ffffff;line-height:1.4}
 .card-id-small{font-size:11px;color:#475569;margin-top:3px;direction:ltr;text-align:right;letter-spacing:0.5px}
 .card-no{font-size:11px;color:#475569;background:#080c14;border-radius:7px;padding:3px 9px;font-weight:700;flex-shrink:0;margin-top:2px}
-.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a2535;border-radius:10px;overflow:hidden;margin-bottom:10px}
-.field{padding:9px 11px;background:#0f1829}
-.fl{font-size:10px;color:#475569;font-weight:700;letter-spacing:0.5px;margin-bottom:4px}
-.fv{font-size:14px;color:#ffffff;font-weight:600}
-.fv.empty{color:#1e2d4a;font-weight:400;font-size:12px}
+
+/* ===== تعديلات الجدول ===== */
+.field-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:#1a2535;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:10px
+}
+.field{
+  padding:6px 8px;           /* تصغير الخلايا */
+  background:#0f1829
+}
+.fl{
+  font-size:12px;            /* تكبير الخط */
+  color:#94a3b8;             /* لون أفتح */
+  font-weight:700;
+  letter-spacing:0.5px;
+  margin-bottom:3px          /* مسافة أقل */
+}
+.fv{
+  font-size:16px;            /* تكبير الخط */
+  color:#f8fafc;             /* لون أفتح */
+  font-weight:600
+}
+.fv.empty{
+  color:#334155;             /* لون أفتح شوية عشان يبان */
+  font-weight:400;
+  font-size:13px
+}
 .fv.danger{color:#f87171;font-weight:700}
 .fv.warn{color:#fbbf24;font-weight:700}
 .fv.ok{color:#34d399;font-weight:600}
+/* ========================== */
+
 .badge-row{display:flex;gap:6px;flex-wrap:wrap}
 .badge{font-size:11px;padding:4px 11px;border-radius:9px;font-weight:700}
 .bb{background:#0f2744;color:#60a5fa;border:1px solid #1e3a5f}
@@ -64,7 +93,7 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .ba{background:#2c1500;color:#fb923c;border:1px solid #451a03}
 .br{background:#200a0a;color:#f87171;border:1px solid #450a0a}
 
-/* ── ALERT — بعد النتائج ── */
+/* ── ALERT ── */
 .alert-banner{background:#160a0a;border:1px solid #7f1d1d;border-radius:14px;padding:14px;margin-top:10px;display:none}
 .alert-banner.show{display:block}
 .alert-title{font-size:14px;font-weight:700;color:#f87171;margin-bottom:10px;display:flex;align-items:center;gap:6px}
@@ -100,6 +129,7 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
+<base target="_blank">
 </head>
 <body>
 <div class="wrap">
@@ -164,7 +194,7 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
   </div>
   <div id="resEl"></div>
 
-  <!-- ③ ALERTS — بعد النتائج -->
+  <!-- ③ ALERTS -->
   <div class="alert-banner" id="alertBanner">
     <div class="alert-title">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -243,7 +273,7 @@ if('serviceWorker' in navigator){
   });
 }
 
-// ── NOTIFICATIONS — انتهاء الإشارة ──────────
+// ── NOTIFICATIONS ────────────────────────────
 function toggleNotif(){
   if(!('Notification' in window)){showToast('المتصفح لا يدعم التنبيهات');return;}
   if(Notification.permission==='granted'&&notifEnabled){
@@ -265,16 +295,13 @@ function updateNotifBtn(){
   document.getElementById('notifBtn').classList.toggle('active',on);
 }
 
-// حساب باقي أيام الإشارة من عمود "نهاية_الاشارة" و "باقى على الانتهاء"
 function getPermitStatus(remaining, endStr){
-  // باقى على الانتهاء — رقم مباشر
   if(remaining && !isNaN(parseInt(remaining))){
     var days=parseInt(remaining);
     if(days<=0) return 'danger';
     if(days<=30) return 'warn';
     return 'ok';
   }
-  // fallback: نهاية الإشارة كتاريخ
   if(endStr){
     var p=endStr.replace(/\//g,'-').split('-');
     var d;
@@ -301,9 +328,7 @@ function checkPermitAlerts(){
     if(status==='danger') expired.push({name:x.name, remaining:x.remaining, end:x.end});
     else if(status==='warn') warning.push({name:x.name, remaining:x.remaining, end:x.end});
   }
-  // In-app banner
   showPermitBanner(expired, warning);
-  // Push notification
   if(notifEnabled&&Notification.permission==='granted'){
     if(expired.length>0){
       new Notification('⚠️ إشارات منتهية',{
