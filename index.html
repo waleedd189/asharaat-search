@@ -61,23 +61,23 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
   margin-bottom:10px
 }
 .field{
-  padding:6px 8px;           /* تصغير الخلايا */
+  padding:6px 8px;
   background:#0f1829
 }
 .fl{
-  font-size:12px;            /* تكبير الخط */
-  color:#94a3b8;             /* لون أفتح */
+  font-size:12px;
+  color:#94a3b8;
   font-weight:700;
   letter-spacing:0.5px;
-  margin-bottom:3px          /* مسافة أقل */
+  margin-bottom:3px
 }
 .fv{
-  font-size:16px;            /* تكبير الخط */
-  color:#f8fafc;             /* لون أفتح */
+  font-size:16px;
+  color:#f8fafc;
   font-weight:600
 }
 .fv.empty{
-  color:#334155;             /* لون أفتح شوية عشان يبان */
+  color:#334155;
   font-weight:400;
   font-size:13px
 }
@@ -129,7 +129,6 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
-<base target="_blank">
 </head>
 <body>
 <div class="wrap">
@@ -194,7 +193,7 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
   </div>
   <div id="resEl"></div>
 
-  <!-- ③ ALERTS -->
+  <!-- ③ ALERTS — أول اسم بس -->
   <div class="alert-banner" id="alertBanner">
     <div class="alert-title">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -344,27 +343,30 @@ function checkPermitAlerts(){
   }
 }
 
+/* ===== عرض أول اسم بس ===== */
 function showPermitBanner(expired, warning){
   var banner=document.getElementById('alertBanner');
   var list=document.getElementById('alertList');
-  var all=[];
-  for(var i=0;i<Math.min(expired.length,5);i++){
-    var x=expired[i];
-    all.push('<div class="alert-item">🔴 '+esc(x.name)+'<div class="alert-sub">الإشارة منتهية'+(x.remaining?' — '+x.remaining+' يوم':x.end?' — '+x.end:'')+'</div></div>');
-  }
-  for(var j=0;j<Math.min(warning.length,5);j++){
-    var x=warning[j];
-    all.push('<div class="alert-item">🟡 '+esc(x.name)+'<div class="alert-sub">باقى '+(x.remaining||'')+ ' يوم على نهاية الإشارة</div></div>');
-  }
-  if(all.length>0){
-    list.innerHTML=all.join('');
-    var extra=expired.length+warning.length-10;
-    if(extra>0)list.innerHTML+='<div class="alert-more">و '+extra+' سجلات أخرى...</div>';
+  var html='';
+  var total=expired.length+warning.length;
+
+  if(expired.length>0){
+    var x=expired[0];
+    html='<div class="alert-item">🔴 '+esc(x.name)+'<div class="alert-sub">الإشارة منتهية'+(x.remaining?' — '+x.remaining+' يوم':x.end?' — '+x.end:'')+'</div></div>';
+    if(total>1) html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';
+    list.innerHTML=html;
+    banner.classList.add('show');
+  } else if(warning.length>0){
+    var x=warning[0];
+    html='<div class="alert-item">🟡 '+esc(x.name)+'<div class="alert-sub">باقى '+(x.remaining||'')+ ' يوم على نهاية الإشارة</div></div>';
+    if(total>1) html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';
+    list.innerHTML=html;
     banner.classList.add('show');
   } else {
     banner.classList.remove('show');
   }
 }
+/* ========================== */
 
 // ── DATA ─────────────────────────────────────
 function loadData(){
