@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>بحث الاشارات</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f5f5;direction:rtl}
+.wrap{padding:12px;max-width:600px;margin:0 auto}
+h1{font-size:17px;font-weight:500;color:#111;margin-bottom:12px}
+.search-box{position:relative;margin-bottom:10px}
+.search-box input{width:100%;padding:14px 44px 14px 14px;font-size:16px;border:1.5px solid #ddd;border-radius:14px;background:#fff;outline:none;direction:rtl;font-family:inherit}
+.search-box input:focus{border-color:#378ADD}
+.sico{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#aaa;font-size:20px;pointer-events:none}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
+.tab-row::-webkit-scrollbar{display:none}
+.tab{padding:7px 14px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #ddd;color:#666;background:#fff;white-space:nowrap;flex-shrink:0;font-family:inherit}
+.tab.on{background:#378ADD;color:#fff;border-color:#378ADD}
+.toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.stats{font-size:13px;color:#888}
+.rtime{font-size:11px;color:#bbb;margin-bottom:8px}
+.rbtn{font-size:12px;color:#378ADD;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 6px}
+.card{background:#fff;border:0.5px solid #e5e5e5;border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.card:active{background:#f0f7ff}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.cn{font-size:15px;font-weight:500;color:#111;flex:1;line-height:1.4}
+.cno{font-size:12px;color:#999;background:#f5f5f5;border-radius:6px;padding:2px 8px;flex-shrink:0;margin-right:8px}
+.cid{font-size:12px;color:#888;margin-bottom:6px;direction:ltr;text-align:right}
+.cr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.badge{font-size:12px;padding:3px 10px;border-radius:12px}
+.bb{background:#E6F1FB;color:#185FA5}
+.bg{background:#EAF3DE;color:#3B6D11}
+.ba{background:#FAEEDA;color:#854F0B}
+.br{background:#FCEBEB;color:#A32D2D}
+.bx{background:#f0f0f0;color:#555}
+.cc{font-size:13px;color:#888;margin-top:6px}
+.empty{text-align:center;padding:40px 20px;color:#aaa;font-size:14px}
+.loading{text-align:center;padding:40px 20px;color:#888;font-size:14px}
+.spinner{display:inline-block;width:28px;height:28px;border:3px solid #ddd;border-top-color:#378ADD;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-box{background:#FCEBEB;border-radius:12px;padding:16px;margin:10px 0;color:#7A1F1F;font-size:14px;line-height:1.8}
+.err-box code{font-size:11px;direction:ltr;display:block;margin-top:8px;word-break:break-all;color:#555}
+.rbtn2{margin-top:12px;padding:10px 24px;background:#378ADD;color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-height:82vh;overflow-y:auto}
+.mtitle{font-size:18px;font-weight:500;margin-bottom:16px;color:#111}
+.mrow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:0.5px solid #eee}
+.mrow:last-of-type{border:none}
+.ml{font-size:13px;color:#888}
+.mv{font-size:14px;color:#111;font-weight:500;direction:ltr;text-align:left}
+.mv.warn{color:#BA7517}
+.mv.danger{color:#A32D2D}
+.closebtn{width:100%;padding:13px;background:#f5f5f5;border:none;border-radius:14px;font-size:15px;color:#111;cursor:pointer;margin-top:14px;font-family:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>&#128269; بحث الاشارات</h1>
+  <div id="loadArea" class="loading">
+    <div class="spinner"></div><br>جاري تحميل البيانات...
+  </div>
+  <div id="mainArea" style="display:none">
+    <div class="search-box">
+      <span class="sico">&#x2315;</span>
+      <input type="search" id="qInput" placeholder="ابحث بالاسم او الرقم القومي او اللوحة..." autocomplete="off" />
+    </div>
+    <div class="tab-row">
+      <div class="tab on" id="t0" onclick="setField('all',0)">الكل</div>
+      <div class="tab" id="t1" onclick="setField('name',1)">الاسم</div>
+      <div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div>
+      <div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div>
+      <div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div>
+    </div>
+    <div class="toprow">
+      <div class="stats" id="stEl">اكتب للبحث...</div>
+      <button class="rbtn" onclick="loadData()">&#8635; تحديث</button>
+    </div>
+    <div class="rtime" id="rtEl"></div>
+    <div id="resEl"></div>
+  </div>
+</div>
+<div id="modalBg" style="display:none" class="modal-bg">
+  <div class="modal" id="modalContent"></div>
+</div>
+<script>
+var DATA = [];
+var FIELD = 'all';
+var SHEET_ID = '1jmUEQg3KeRrUe5weJqFaSMFEc9Ahb8SNSqk1n0iDRnc';
+var GID = '477351139';
+
+function loadData() {
+  document.getElementById('loadArea').style.display = 'block';
+  document.getElementById('mainArea').style.display = 'none';
+  document.getElementById('loadArea').innerHTML = '<div class="spinner"></div><br>جاري تحميل البيانات...';
+  var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=' + GID;
+  fetch(url)
+    .then(function(resp) {
+      if (!resp.ok) { throw new Error('HTTP ' + resp.status); }
+      return resp.text();
+    })
+    .then(function(csv) {
+      DATA = parseCSV(csv);
+      document.getElementById('loadArea').style.display = 'none';
+      document.getElementById('mainArea').style.display = 'block';
+      var t = new Date();
+      document.getElementById('rtEl').textContent = 'آخر تحديث: ' + t.toLocaleTimeString('ar-EG');
+      document.getElementById('stEl').textContent = 'تم تحميل ' + DATA.length + ' سجل - اكتب للبحث';
+      document.getElementById('qInput').focus();
+    })
+    .catch(function(err) {
+      document.getElementById('loadArea').innerHTML =
+        '<div class="err-box">&#9888; تعذر تحميل البيانات<br>' +
+        'تأكد ان الشيت مضبوط على "Anyone with the link can view"<br>' +
+        'او افتح الرابط ده مباشرة للتحقق:' +
+        '<code>' + url + '</code>' +
+        '<br><button class="rbtn2" onclick="loadData()">&#8635; اعادة المحاولة</button>' +
+        '</div>';
+    });
+}
+
+function parseCSV(text) {
+  var lines = text.split('\n');
+  var result = [];
+  var headerFound = false;
+  for (var i = 0; i < lines.length; i++) {
+    var cells = splitLine(lines[i]);
+    if (!cells || cells.length < 3) continue;
+    if (!headerFound) {
+      var row = cells.join(' ');
+      if (row.indexOf('\u0627\u0644\u0627\u0633\u0645') >= 0 || row.indexOf('No') >= 0 || row.indexOf('\u0628\u0637\u0627\u0642\u0629') >= 0) {
+        headerFound = true;
+      }
+      continue;
+    }
+    while (cells.length < 16) cells.push('');
+    var name = trim(cells[1]);
+    var id = trim(cells[2]);
+    if (!name && !id) continue;
+    var num1 = trim(cells[5]);
+    var train1 = trim(cells[4]);
+    var num2 = trim(cells[8]);
+    var train2 = trim(cells[7]);
+    var p1 = trim(cells[14]) || (num1 && train1 ? num1 + ' ' + train1 : '');
+    var p2 = trim(cells[15]) || (num2 && train2 ? num2 + ' ' + train2 : '');
+    result.push({
+      no: trim(cells[0]),
+      name: name,
+      id: id,
+      train1: train1, num1: num1, exp1: trim(cells[6]),
+      train2: train2, num2: num2, exp2: trim(cells[9]),
+      contractor: trim(cells[10]),
+      start: trim(cells[11]),
+      end: trim(cells[12]),
+      remaining: trim(cells[13]),
+      plate1: p1,
+      plate2: p2
+    });
+  }
+  return result;
+}
+
+function trim(s) { return (s || '').trim().replace(/^"|"$/g, ''); }
+
+function splitLine(line) {
+  var res = [];
+  var cur = '';
+  var inQ = false;
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { res.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  res.push(cur);
+  return res;
+}
+
+function expClass(s) {
+  if (!s) return '';
+  s = s.replace(/\//g, '-');
+  var p = s.split('-');
+  var d;
+  if (p.length === 3) {
+    if (p[0].length === 4) d = new Date(+p[0], +p[1]-1, +p[2]);
+    else d = new Date(+p[2], +p[1]-1, +p[0]);
+  }
+  if (!d || isNaN(d.getTime())) return '';
+  var diff = (d - Date.now()) / 864e5;
+  return diff < 0 ? 'danger' : diff < 60 ? 'warn' : '';
+}
+
+function setField(f, idx) {
+  FIELD = f;
+  for (var i = 0; i < 5; i++) {
+    var el = document.getElementById('t' + i);
+    if (el) el.classList.toggle('on', i === idx);
+  }
+  doSearch();
+}
+
+function doSearch() {
+  var q = document.getElementById('qInput').value.trim();
+  var stEl = document.getElementById('stEl');
+  var resEl = document.getElementById('resEl');
+  if (q.length < 2) {
+    stEl.textContent = 'تم تحميل ' + DATA.length + ' سجل - اكتب للبحث';
+    resEl.innerHTML = '';
+    return;
+  }
+  var hits = [];
+  for (var i = 0; i < DATA.length; i++) {
+    var x = DATA[i];
+    var match = false;
+    if (FIELD === 'name') match = x.name.indexOf(q) >= 0;
+    else if (FIELD === 'id') match = x.id.indexOf(q) >= 0;
+    else if (FIELD === 'plate') match = (x.plate1 + x.plate2 + x.num1 + x.num2).indexOf(q) >= 0;
+    else if (FIELD === 'contractor') match = x.contractor.indexOf(q) >= 0;
+    else match = (x.name + x.id + x.contractor + x.plate1 + x.plate2 + x.num1 + x.num2).indexOf(q) >= 0;
+    if (match) hits.push(i);
+  }
+  stEl.textContent = 'نتائج: ' + hits.length + ' سجل';
+  if (!hits.length) { resEl.innerHTML = '<div class="empty">لا توجد نتائج</div>'; return; }
+  var html = '';
+  var max = Math.min(hits.length, 60);
+  for (var j = 0; j < max; j++) {
+    var idx = hits[j];
+    var x = DATA[idx];
+    var e1 = expClass(x.exp1);
+    var ec = e1 === 'danger' ? 'br' : e1 === 'warn' ? 'ba' : 'bx';
+    html += '<div class="card" onclick="showDetail(' + idx + ')">';
+    html += '<div class="ch"><div class="cn">' + esc(x.name || '—') + '</div><div class="cno">#' + esc(x.no) + '</div></div>';
+    if (x.id) html += '<div class="cid">' + esc(x.id) + '</div>';
+    html += '<div class="cr">';
+    if (x.plate1) html += '<span class="badge bb">' + esc(x.plate1) + '</span>';
+    if (x.plate2) html += '<span class="badge bg">' + esc(x.plate2) + '</span>';
+    if (x.exp1) html += '<span class="badge ' + ec + '">' + esc(x.exp1) + '</span>';
+    if (x.remaining) html += '<span class="badge bx">باقى: ' + esc(x.remaining) + '</span>';
+    html += '</div>';
+    if (x.contractor) html += '<div class="cc">المقاول: ' + esc(x.contractor) + '</div>';
+    html += '</div>';
+  }
+  if (hits.length > 60) html += '<div class="empty" style="padding:14px">يعرض اول 60 من ' + hits.length + '</div>';
+  resEl.innerHTML = html;
+}
+
+function showDetail(idx) {
+  var x = DATA[idx];
+  if (!x) return;
+  var e1 = expClass(x.exp1);
+  var e2 = expClass(x.exp2);
+  var w1 = e1 === 'danger' ? ' &#9888; منتهى' : e1 === 'warn' ? ' &#9888; قريب الانتهاء' : '';
+  var w2 = e2 === 'danger' ? ' &#9888; منتهى' : e2 === 'warn' ? ' &#9888; قريب الانتهاء' : '';
+  var h = '<div class="mtitle">' + esc(x.name || '—') + '</div>';
+  h += row('م', x.no);
+  h += row('رقم قومى', x.id);
+  h += row('المقاول', x.contractor);
+  h += row('اول الاشارة', x.start);
+  h += row('نهاية الاشارة', x.end);
+  h += row('باقى على الانتهاء', x.remaining);
+  if (x.plate1 || x.num1) h += row('القاطرة', x.plate1 || (x.num1 + ' ' + x.train1));
+  if (x.exp1) h += '<div class="mrow"><span class="ml">انتهاء القاطرة</span><span class="mv ' + e1 + '">' + esc(x.exp1) + w1 + '</span></div>';
+  if (x.plate2 || x.num2) h += row('المقطورة', x.plate2 || (x.num2 + ' ' + x.train2));
+  if (x.exp2) h += '<div class="mrow"><span class="ml">انتهاء المقطورة</span><span class="mv ' + e2 + '">' + esc(x.exp2) + w2 + '</span></div>';
+  h += '<button class="closebtn" onclick="closeModal()">اغلاق</button>';
+  document.getElementById('modalContent').innerHTML = h;
+  document.getElementById('modalBg').style.display = 'flex';
+}
+
+function row(label, val) {
+  return '<div class="mrow"><span class="ml">' + label + '</span><span class="mv">' + esc(val || '—') + '</span></div>';
+}
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function closeModal() {
+  document.getElementById('modalBg').style.display = 'none';
+}
+
+document.getElementById('modalBg').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.getElementById('qInput').addEventListener('input', doSearch);
+
+loadData();
+</script>
+</body>
+</html>
