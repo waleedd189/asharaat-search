@@ -9,8 +9,6 @@
 <meta name="apple-mobile-web-app-title" content="الاشارات">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <title>بحث الاشارات</title>
 <style>
@@ -19,72 +17,42 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .wrap{padding:14px;max-width:640px;margin:0 auto;padding-bottom:100px}
 
 /* ── HEADER ── */
-.header{background:linear-gradient(135deg,#0f1829 0%,#0a0e1a 100%);border:1px solid #1e2d4a;border-radius:20px;padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;top:-40px;left:-40px;width:150px;height:150px;background:radial-gradient(circle,#1d4ed820 0%,transparent 70%);pointer-events:none}
-.header-top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-.logo-wrap{flex-shrink:0}
-.logo-svg{width:52px;height:52px}
-.header-text{}
-.app-title{font-size:20px;font-weight:900;color:#e2e8f0;line-height:1.1;letter-spacing:-0.3px}
+.header{background:#0f1829;border:1px solid #1e2d4a;border-radius:20px;padding:16px 18px;margin-bottom:14px}
+.header-top{display:flex;align-items:center;gap:12px}
+.app-title{font-size:20px;font-weight:900;color:#e2e8f0;line-height:1.1}
 .app-title span{color:#3b82f6}
-.app-sub{font-size:12px;color:#475569;margin-top:2px;font-weight:400}
-.notif-btn{position:absolute;top:14px;left:14px;background:#1a2535;border:1px solid #2d3f5a;border-radius:10px;padding:7px 11px;color:#94a3b8;font-size:12px;font-family:'Cairo',inherit;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.2s}
+.app-sub{font-size:12px;color:#475569;margin-top:3px;font-weight:500}
+.header-actions{margin-top:12px;display:flex;align-items:center;justify-content:space-between}
+.notif-btn{background:#1a2535;border:1px solid #2d3f5a;border-radius:10px;padding:7px 13px;color:#94a3b8;font-size:13px;font-family:'Cairo',inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s}
 .notif-btn.active{background:#1e3a5f;border-color:#2563eb;color:#60a5fa}
-.ndot{width:7px;height:7px;border-radius:50%;background:#334155;flex-shrink:0}
-.ndot.on{background:#3b82f6;box-shadow:0 0 5px #3b82f6}
+.ndot{width:7px;height:7px;border-radius:50%;background:#334155;flex-shrink:0;transition:all 0.2s}
+.ndot.on{background:#3b82f6;box-shadow:0 0 6px #3b82f6}
+.rtime-top{font-size:11px;color:#334155;font-weight:500}
 
-/* ── PERMIT BANNER ── */
-.permit-banner{display:flex;align-items:center;gap:12px;background:#0f1829;border:1px solid #1e2d4a;border-radius:14px;padding:12px 14px;margin-bottom:12px}
-.permit-icon{flex-shrink:0}
-.permit-text{flex:1}
-.permit-title{font-size:13px;font-weight:700;color:#93c5fd;margin-bottom:1px}
-.permit-desc{font-size:11px;color:#475569}
-
-/* ── ALERT ── */
-.alert-banner{background:#160a0a;border:1px solid #7f1d1d;border-radius:14px;padding:12px 14px;margin-bottom:12px;display:none}
-.alert-banner.show{display:block}
-.alert-title{font-size:13px;font-weight:700;color:#f87171;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.alert-item{font-size:12px;color:#fca5a5;padding:4px 0;border-bottom:1px solid #2a0e0e;line-height:1.5}
-.alert-item:last-child{border:none}
-.alert-more{font-size:11px;color:#64748b;margin-top:6px}
-
-/* ── INSTALL ── */
-.install-bar{background:#0f1829;border:1px solid #1e3a5f;border-radius:14px;padding:11px 14px;margin-bottom:12px;display:none;align-items:center;gap:10px}
-.install-bar.show{display:flex}
-.install-txt{font-size:13px;color:#93c5fd;flex:1;font-weight:500}
-.install-btn{padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Cairo',inherit;flex-shrink:0}
-
-/* ── SEARCH ── */
+/* ── SEARCH — أول حاجة ── */
 .search-box{position:relative;margin-bottom:10px}
-.search-box input{width:100%;padding:14px 48px 14px 14px;font-size:15px;font-family:'Cairo',inherit;border:1.5px solid #1e2d4a;border-radius:14px;background:#0f1829;color:#e2e8f0;outline:none;direction:rtl;transition:border-color 0.2s;font-weight:500}
+.search-box input{width:100%;padding:14px 48px 14px 14px;font-size:16px;font-family:'Cairo',inherit;font-weight:600;border:1.5px solid #1e2d4a;border-radius:14px;background:#0f1829;color:#ffffff;outline:none;direction:rtl;transition:border-color 0.2s}
 .search-box input:focus{border-color:#3b82f6;background:#111827}
 .search-box input::placeholder{color:#334155;font-weight:400}
 .sico{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#334155;pointer-events:none}
-
-/* ── TABS ── */
-.tab-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
 .tab-row::-webkit-scrollbar{display:none}
-.tab{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;font-family:'Cairo',inherit;cursor:pointer;border:1px solid #1e2d4a;color:#64748b;background:#0f1829;white-space:nowrap;flex-shrink:0;transition:all 0.15s}
-.tab.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.tab{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;font-family:'Cairo',inherit;cursor:pointer;border:1px solid #1e2d4a;color:#64748b;background:#0f1829;white-space:nowrap;flex-shrink:0;transition:all 0.15s}
+.tab.on{background:#2563eb;color:#ffffff;border-color:#2563eb}
+.toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.stats{font-size:13px;color:#64748b;font-weight:600}
+.rbtn{font-size:13px;font-weight:700;color:#3b82f6;background:none;border:none;cursor:pointer;font-family:'Cairo',inherit;padding:4px 6px}
 
-/* ── TOP ROW ── */
-.toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
-.stats{font-size:13px;color:#475569;font-weight:500}
-.rtime{font-size:11px;color:#1e2d4a;margin-bottom:10px}
-.rbtn{font-size:13px;font-weight:600;color:#3b82f6;background:none;border:none;cursor:pointer;font-family:'Cairo',inherit;padding:4px 6px}
-
-/* ── CARD ── */
-.card{background:#0f1829;border:1px solid #1e2d4a;border-radius:18px;padding:14px 16px;margin-bottom:10px;transition:border-color 0.15s}
-.card:active{border-color:#2563eb}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #1a2535}
-.card-name-wrap{}
-.card-name{font-size:16px;font-weight:700;color:#e2e8f0;line-height:1.4}
-.card-id-small{font-size:11px;color:#334155;margin-top:2px;direction:ltr;text-align:right;font-family:monospace;letter-spacing:0.5px}
-.card-no{font-size:11px;color:#334155;background:#080c14;border-radius:7px;padding:3px 9px;font-weight:600;flex-shrink:0;margin-top:2px}
+/* ── RESULTS ── */
+.card{background:#0f1829;border:1px solid #1e2d4a;border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #1a2535}
+.card-name{font-size:16px;font-weight:700;color:#ffffff;line-height:1.4}
+.card-id-small{font-size:11px;color:#475569;margin-top:3px;direction:ltr;text-align:right;letter-spacing:0.5px}
+.card-no{font-size:11px;color:#475569;background:#080c14;border-radius:7px;padding:3px 9px;font-weight:700;flex-shrink:0;margin-top:2px}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a2535;border-radius:10px;overflow:hidden;margin-bottom:10px}
-.field{padding:9px 10px;background:#0f1829}
-.fl{font-size:10px;color:#334155;font-weight:600;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase}
-.fv{font-size:13px;color:#cbd5e1;font-weight:600}
+.field{padding:9px 11px;background:#0f1829}
+.fl{font-size:10px;color:#475569;font-weight:700;letter-spacing:0.5px;margin-bottom:4px}
+.fv{font-size:14px;color:#ffffff;font-weight:600}
 .fv.empty{color:#1e2d4a;font-weight:400;font-size:12px}
 .fv.danger{color:#f87171;font-weight:700}
 .fv.warn{color:#fbbf24;font-weight:700}
@@ -96,27 +64,40 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .ba{background:#2c1500;color:#fb923c;border:1px solid #451a03}
 .br{background:#200a0a;color:#f87171;border:1px solid #450a0a}
 
-/* ── LOADING ── */
-.loading{text-align:center;padding:50px 20px;color:#334155;font-size:14px;font-weight:600}
+/* ── ALERT — بعد النتائج ── */
+.alert-banner{background:#160a0a;border:1px solid #7f1d1d;border-radius:14px;padding:14px;margin-top:10px;display:none}
+.alert-banner.show{display:block}
+.alert-title{font-size:14px;font-weight:700;color:#f87171;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.alert-item{font-size:13px;color:#fca5a5;padding:6px 0;border-bottom:1px solid #2a0e0e;font-weight:600;line-height:1.5}
+.alert-item:last-child{border:none}
+.alert-sub{font-size:11px;color:#7f1d1d;margin-top:2px;font-weight:500}
+.alert-more{font-size:11px;color:#64748b;margin-top:8px;font-weight:500}
+
+/* ── INSTALL ── */
+.install-bar{background:#0f1829;border:1px solid #1e3a5f;border-radius:14px;padding:12px 14px;margin-top:10px;display:none;align-items:center;gap:10px}
+.install-bar.show{display:flex}
+.install-txt{font-size:13px;color:#93c5fd;flex:1;font-weight:600}
+.install-btn{padding:9px 18px;background:#2563eb;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;flex-shrink:0}
+
+/* ── LOADING / EMPTY ── */
+.loading{text-align:center;padding:50px 20px;color:#475569;font-size:14px;font-weight:600}
 .spinner{display:inline-block;width:32px;height:32px;border:3px solid #1a2535;border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty{text-align:center;padding:40px 20px;color:#1e2d4a;font-size:14px;font-weight:600}
+.empty{text-align:center;padding:40px 20px;color:#1e2d4a;font-size:14px;font-weight:700}
 .err-box{background:#160a0a;border:1px solid #7f1d1d;border-radius:14px;padding:16px;margin:10px 0;color:#fca5a5;font-size:14px;line-height:1.9;font-weight:500}
 .err-box code{font-size:10px;direction:ltr;display:block;margin-top:8px;word-break:break-all;color:#475569}
 .rbtn2{margin-top:14px;padding:11px 26px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit}
 
-/* ── FOOTER LINK ── */
-.footer{text-align:center;padding:24px 16px 8px;border-top:1px solid #111827;margin-top:20px}
-.footer-label{font-size:11px;color:#1e2d4a;margin-bottom:10px;font-weight:500;letter-spacing:0.5px}
-.quran-link{display:inline-flex;align-items:center;gap:10px;background:#0a1a0f;border:1px solid #14532d;border-radius:16px;padding:12px 20px;text-decoration:none;transition:all 0.2s;max-width:300px;width:100%}
-.quran-link:hover,.quran-link:active{background:#0d2414;border-color:#16a34a}
-.quran-icon{width:38px;height:38px;flex-shrink:0}
-.quran-text{text-align:right}
-.quran-title{font-size:15px;font-weight:700;color:#4ade80;display:block;line-height:1.3}
-.quran-sub{font-size:11px;color:#166534;display:block;margin-top:2px}
+/* ── FOOTER ── */
+.footer{text-align:center;padding:24px 10px 8px;border-top:1px solid #111827;margin-top:24px}
+.footer-label{font-size:12px;color:#334155;margin-bottom:12px;font-weight:700;letter-spacing:1px}
+.quran-link{display:inline-flex;align-items:center;gap:12px;background:#061a0d;border:1px solid #14532d;border-radius:16px;padding:13px 20px;text-decoration:none;transition:all 0.2s;width:100%}
+.quran-link:active{background:#0d2414;border-color:#16a34a}
+.quran-title{font-size:16px;font-weight:900;color:#4ade80;display:block;line-height:1.3;font-family:'Cairo',inherit}
+.quran-sub{font-size:11px;color:#166534;display:block;margin-top:3px;font-weight:500}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:600;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
@@ -126,145 +107,110 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
   <!-- HEADER -->
   <div class="header">
     <div class="header-top">
-      <div class="logo-wrap">
-        <!-- Arabic Truck SVG Logo -->
-        <svg class="logo-svg" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="52" height="52" rx="14" fill="#0f2744"/>
-          <!-- Truck body -->
-          <rect x="6" y="20" width="28" height="16" rx="3" fill="#2563eb"/>
-          <!-- Truck cab -->
-          <rect x="30" y="23" width="14" height="13" rx="3" fill="#3b82f6"/>
-          <!-- Cab window -->
-          <rect x="32" y="25" width="9" height="6" rx="1.5" fill="#bfdbfe" opacity="0.9"/>
-          <!-- Wheels -->
-          <circle cx="12" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="12" cy="37" r="1.5" fill="#60a5fa"/>
-          <circle cx="24" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="24" cy="37" r="1.5" fill="#60a5fa"/>
-          <circle cx="39" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="39" cy="37" r="1.5" fill="#60a5fa"/>
-          <!-- Road line -->
-          <rect x="6" y="36" width="40" height="1" rx="0.5" fill="#1e3a5f"/>
-          <!-- Permit sticker on truck -->
-          <rect x="9" y="23" width="12" height="8" rx="1.5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="0.5"/>
-          <rect x="10.5" y="24.5" width="9" height="1.5" rx="0.5" fill="#60a5fa" opacity="0.6"/>
-          <rect x="10.5" y="27" width="6" height="1.5" rx="0.5" fill="#60a5fa" opacity="0.4"/>
-          <!-- Star/badge on cab -->
-          <circle cx="37" cy="17" r="5" fill="#1d4ed8"/>
-          <text x="37" y="20" text-anchor="middle" font-size="7" fill="#bfdbfe" font-weight="bold">✓</text>
-        </svg>
-      </div>
-      <div class="header-text">
+      <svg width="50" height="50" viewBox="0 0 52 52" fill="none">
+        <rect width="52" height="52" rx="14" fill="#0f2744"/>
+        <rect x="6" y="20" width="28" height="16" rx="3" fill="#2563eb"/>
+        <rect x="30" y="23" width="14" height="13" rx="3" fill="#3b82f6"/>
+        <rect x="32" y="25" width="9" height="6" rx="1.5" fill="#bfdbfe" opacity="0.9"/>
+        <circle cx="12" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
+        <circle cx="12" cy="37" r="1.5" fill="#60a5fa"/>
+        <circle cx="24" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
+        <circle cx="24" cy="37" r="1.5" fill="#60a5fa"/>
+        <circle cx="39" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
+        <circle cx="39" cy="37" r="1.5" fill="#60a5fa"/>
+        <rect x="9" y="23" width="12" height="8" rx="1.5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="0.8"/>
+        <rect x="10.5" y="24.5" width="9" height="1.5" rx="0.5" fill="#93c5fd" opacity="0.7"/>
+        <rect x="10.5" y="27" width="6" height="1.5" rx="0.5" fill="#93c5fd" opacity="0.4"/>
+      </svg>
+      <div>
         <div class="app-title">بحث <span>الاشارات</span></div>
         <div class="app-sub">تصاريح النقل الثقيل</div>
       </div>
     </div>
-    <button class="notif-btn" id="notifBtn" onclick="toggleNotif()">
-      <span class="ndot" id="notifDot"></span>
-      <span id="notifTxt">تنبيهات</span>
-    </button>
+    <div class="header-actions">
+      <div class="rtime-top" id="rtEl"></div>
+      <button class="notif-btn" id="notifBtn" onclick="toggleNotif()">
+        <span class="ndot" id="notifDot"></span>
+        <span id="notifTxt">تنبيه انتهاء الإشارة</span>
+      </button>
+    </div>
   </div>
 
-  <!-- PERMIT ICON BANNER -->
-  <div class="permit-banner">
-    <div class="permit-icon">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-        <rect width="40" height="40" rx="10" fill="#0f1829"/>
-        <!-- Document shape -->
-        <rect x="8" y="5" width="20" height="26" rx="2.5" fill="#1e2d4a" stroke="#2563eb" stroke-width="1"/>
-        <rect x="11" y="10" width="14" height="2" rx="1" fill="#3b82f6" opacity="0.8"/>
-        <rect x="11" y="14" width="10" height="1.5" rx="0.75" fill="#334155"/>
-        <rect x="11" y="17" width="12" height="1.5" rx="0.75" fill="#334155"/>
-        <rect x="11" y="20" width="8" height="1.5" rx="0.75" fill="#334155"/>
-        <!-- Stamp/seal -->
-        <circle cx="28" cy="28" r="8" fill="#0a0e1a" stroke="#16a34a" stroke-width="1.5"/>
-        <circle cx="28" cy="28" r="5.5" fill="none" stroke="#16a34a" stroke-width="0.8" stroke-dasharray="2 1"/>
-        <text x="28" y="31.5" text-anchor="middle" font-size="8" fill="#4ade80" font-weight="bold">✓</text>
+  <!-- ① SEARCH -->
+  <div class="search-box">
+    <span class="sico">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="9" cy="9" r="6" stroke="#475569" stroke-width="1.8"/>
+        <line x1="13.5" y1="13.5" x2="17" y2="17" stroke="#475569" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
-    </div>
-    <div class="permit-text">
-      <div class="permit-title">نظام متابعة التصاريح</div>
-      <div class="permit-desc">انتهاء التراخيص — القاطرات — المقطورات</div>
-    </div>
+    </span>
+    <input type="search" id="qInput" placeholder="ابحث بالاسم أو الرقم القومي أو اللوحة..." autocomplete="off"/>
+  </div>
+  <div class="tab-row">
+    <div class="tab on" id="t0" onclick="setField('all',0)">الكل</div>
+    <div class="tab" id="t1" onclick="setField('name',1)">الاسم</div>
+    <div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div>
+    <div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div>
+    <div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div>
+  </div>
+  <div class="toprow">
+    <div class="stats" id="stEl">جاري التحميل...</div>
+    <button class="rbtn" onclick="loadData()">&#8635; تحديث</button>
   </div>
 
-  <!-- INSTALL BAR -->
-  <div class="install-bar" id="installBar">
-    <div class="install-txt">&#128242; ثبّت التطبيق على هاتفك</div>
-    <button class="install-btn" id="installBtn" onclick="doInstall()">تثبيت</button>
+  <!-- ② RESULTS -->
+  <div id="loadArea" class="loading">
+    <div class="spinner"></div><br>جاري تحميل البيانات...
   </div>
+  <div id="resEl"></div>
 
-  <!-- ALERT BANNER -->
+  <!-- ③ ALERTS — بعد النتائج -->
   <div class="alert-banner" id="alertBanner">
     <div class="alert-title">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 14H1L8 1Z" stroke="#f87171" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6" x2="8" y2="10" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.75" fill="#f87171"/></svg>
-      تراخيص تحتاج مراجعة عاجلة
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1L15 14H1L8 1Z" stroke="#f87171" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="8" y1="6" x2="8" y2="10" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="8" cy="12" r="0.8" fill="#f87171"/>
+      </svg>
+      إشارات على وشك الانتهاء أو منتهية
     </div>
     <div id="alertList"></div>
   </div>
 
-  <!-- LOAD AREA -->
-  <div id="loadArea" class="loading">
-    <div class="spinner"></div><br>جاري تحميل البيانات...
+  <!-- ④ INSTALL -->
+  <div class="install-bar" id="installBar">
+    <div class="install-txt">&#128242; ثبّت التطبيق على هاتفك</div>
+    <button class="install-btn" onclick="doInstall()">تثبيت</button>
   </div>
 
-  <!-- MAIN -->
-  <div id="mainArea" style="display:none">
-    <div class="search-box">
-      <span class="sico">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#334155" stroke-width="1.8"/><line x1="13.5" y1="13.5" x2="17" y2="17" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </span>
-      <input type="search" id="qInput" placeholder="ابحث بالاسم أو الرقم القومي أو اللوحة..." autocomplete="off"/>
-    </div>
-    <div class="tab-row">
-      <div class="tab on" id="t0" onclick="setField('all',0)">الكل</div>
-      <div class="tab" id="t1" onclick="setField('name',1)">الاسم</div>
-      <div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div>
-      <div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div>
-      <div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div>
-    </div>
-    <div class="toprow">
-      <div class="stats" id="stEl">اكتب للبحث...</div>
-      <button class="rbtn" onclick="loadData()">&#8635; تحديث</button>
-    </div>
-    <div class="rtime" id="rtEl"></div>
-    <div id="resEl"></div>
-  </div>
-
-  <!-- FOOTER — صدقة جارية -->
+  <!-- FOOTER -->
   <div class="footer">
-    <div class="footer-label">صـدقـة جـاريـة</div>
+    <div class="footer-label">✦ صـدقـة جـاريـة ✦</div>
     <a class="quran-link" href="https://waleedd189.github.io/radio-quran/" target="_blank">
-      <!-- Quran Icon -->
-      <svg class="quran-icon" viewBox="0 0 38 38" fill="none">
-        <rect width="38" height="38" rx="10" fill="#052e16"/>
-        <!-- Open book -->
-        <rect x="4" y="10" width="14" height="18" rx="2" fill="#14532d" stroke="#16a34a" stroke-width="0.8"/>
-        <rect x="20" y="10" width="14" height="18" rx="2" fill="#14532d" stroke="#16a34a" stroke-width="0.8"/>
-        <!-- Book spine -->
-        <rect x="17.5" y="9" width="3" height="20" rx="1" fill="#0a1f0a" stroke="#16a34a" stroke-width="0.5"/>
-        <!-- Lines in book -->
-        <rect x="6.5" y="14" width="9" height="1" rx="0.5" fill="#4ade80" opacity="0.6"/>
-        <rect x="6.5" y="17" width="7" height="1" rx="0.5" fill="#4ade80" opacity="0.4"/>
-        <rect x="6.5" y="20" width="9" height="1" rx="0.5" fill="#4ade80" opacity="0.4"/>
-        <rect x="6.5" y="23" width="6" height="1" rx="0.5" fill="#4ade80" opacity="0.3"/>
-        <rect x="22.5" y="14" width="9" height="1" rx="0.5" fill="#4ade80" opacity="0.6"/>
-        <rect x="22.5" y="17" width="7" height="1" rx="0.5" fill="#4ade80" opacity="0.4"/>
-        <rect x="22.5" y="20" width="9" height="1" rx="0.5" fill="#4ade80" opacity="0.4"/>
-        <rect x="22.5" y="23" width="6" height="1" rx="0.5" fill="#4ade80" opacity="0.3"/>
-        <!-- Radio waves -->
-        <path d="M15 6 Q19 3 23 6" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
-        <path d="M12 4 Q19 0 26 4" stroke="#4ade80" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4"/>
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <rect width="42" height="42" rx="11" fill="#052e16"/>
+        <rect x="5" y="11" width="15" height="20" rx="2" fill="#14532d" stroke="#16a34a" stroke-width="0.8"/>
+        <rect x="22" y="11" width="15" height="20" rx="2" fill="#14532d" stroke="#16a34a" stroke-width="0.8"/>
+        <rect x="19" y="10" width="4" height="22" rx="1.5" fill="#021a07" stroke="#16a34a" stroke-width="0.5"/>
+        <rect x="7.5" y="15" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.6"/>
+        <rect x="7.5" y="18" width="7" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
+        <rect x="7.5" y="21" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
+        <rect x="7.5" y="24" width="6" height="1.2" rx="0.6" fill="#4ade80" opacity="0.3"/>
+        <rect x="24.5" y="15" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.6"/>
+        <rect x="24.5" y="18" width="7" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
+        <rect x="24.5" y="21" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
+        <rect x="24.5" y="24" width="6" height="1.2" rx="0.6" fill="#4ade80" opacity="0.3"/>
+        <path d="M14 8Q21 5 28 8" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <path d="M11 6Q21 2 31 6" stroke="#4ade80" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.3"/>
       </svg>
-      <div class="quran-text">
+      <div>
         <span class="quran-title">﴿ راديو قرآن ﴾</span>
         <span class="quran-sub">صفحة اللهم لك الحمد — اضغط للاستماع</span>
       </div>
     </a>
   </div>
 
-</div><!-- /wrap -->
-
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -273,7 +219,7 @@ var SHEET_ID='1jmUEQg3KeRrUe5weJqFaSMFEc9Ahb8SNSqk1n0iDRnc';
 var GID='477351139';
 var deferredPrompt=null, notifEnabled=false;
 
-// PWA Install
+// ── PWA ──────────────────────────────────────
 window.addEventListener('beforeinstallprompt',function(e){
   e.preventDefault(); deferredPrompt=e;
   document.getElementById('installBar').classList.add('show');
@@ -286,20 +232,18 @@ function doInstall(){
   if(!deferredPrompt)return;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then(function(r){
-    if(r.outcome==='accepted') showToast('جاري التثبيت...');
+    if(r.outcome==='accepted')showToast('جاري التثبيت...');
     deferredPrompt=null;
     document.getElementById('installBar').classList.remove('show');
   });
 }
-
-// Service Worker
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
-    navigator.serviceWorker.register('/sw.js').catch(function(){});
+    navigator.serviceWorker.register('sw.js').catch(function(){});
   });
 }
 
-// Notifications
+// ── NOTIFICATIONS — انتهاء الإشارة ──────────
 function toggleNotif(){
   if(!('Notification' in window)){showToast('المتصفح لا يدعم التنبيهات');return;}
   if(Notification.permission==='granted'&&notifEnabled){
@@ -309,120 +253,152 @@ function toggleNotif(){
   Notification.requestPermission().then(function(p){
     if(p==='granted'){
       notifEnabled=true; localStorage.setItem('notif','1');
-      updateNotifBtn(); showToast('تم تفعيل التنبيهات ✓');
-      checkAndNotify();
+      updateNotifBtn(); showToast('تم تفعيل تنبيهات الإشارة ✓');
+      checkPermitAlerts();
     } else { showToast('يرجى السماح بالتنبيهات من إعدادات المتصفح'); }
   });
 }
 function updateNotifBtn(){
-  var dot=document.getElementById('notifDot');
-  var txt=document.getElementById('notifTxt');
-  var btn=document.getElementById('notifBtn');
   var on=notifEnabled&&Notification.permission==='granted';
-  dot.classList.toggle('on',on);
-  txt.textContent=on?'تنبيهات فعّالة':'تنبيهات';
-  btn.classList.toggle('active',on);
+  document.getElementById('notifDot').classList.toggle('on',on);
+  document.getElementById('notifTxt').textContent=on?'تنبيهات فعّالة':'تنبيه انتهاء الإشارة';
+  document.getElementById('notifBtn').classList.toggle('active',on);
 }
-function checkAndNotify(){
+
+// حساب باقي أيام الإشارة من عمود "نهاية_الاشارة" و "باقى على الانتهاء"
+function getPermitStatus(remaining, endStr){
+  // باقى على الانتهاء — رقم مباشر
+  if(remaining && !isNaN(parseInt(remaining))){
+    var days=parseInt(remaining);
+    if(days<=0) return 'danger';
+    if(days<=30) return 'warn';
+    return 'ok';
+  }
+  // fallback: نهاية الإشارة كتاريخ
+  if(endStr){
+    var p=endStr.replace(/\//g,'-').split('-');
+    var d;
+    if(p.length===3){
+      if(p[0].length===4)d=new Date(+p[0],+p[1]-1,+p[2]);
+      else d=new Date(+p[2],+p[1]-1,+p[0]);
+    }
+    if(d&&!isNaN(d.getTime())){
+      var diff=(d-Date.now())/864e5;
+      if(diff<=0) return 'danger';
+      if(diff<=30) return 'warn';
+      return 'ok';
+    }
+  }
+  return '';
+}
+
+function checkPermitAlerts(){
   if(!DATA.length)return;
-  var expired=[],warn=[];
+  var expired=[], warning=[];
   for(var i=0;i<DATA.length;i++){
     var x=DATA[i];
-    var e1=expClass(x.exp1),e2=expClass(x.exp2);
-    if(e1==='danger'||e2==='danger') expired.push(x.name);
-    else if(e1==='warn'||e2==='warn') warn.push(x.name);
+    var status=getPermitStatus(x.remaining, x.end);
+    if(status==='danger') expired.push({name:x.name, remaining:x.remaining, end:x.end});
+    else if(status==='warn') warning.push({name:x.name, remaining:x.remaining, end:x.end});
   }
-  showAlertBanner(expired,warn);
+  // In-app banner
+  showPermitBanner(expired, warning);
+  // Push notification
   if(notifEnabled&&Notification.permission==='granted'){
     if(expired.length>0){
-      new Notification('⚠️ تراخيص منتهية',{
-        body:expired.slice(0,3).join('، ')+(expired.length>3?' و'+(expired.length-3)+' آخرين':''),
-        icon:'/icon-192.png',dir:'rtl',lang:'ar',tag:'expired'
+      new Notification('⚠️ إشارات منتهية',{
+        body:expired.slice(0,3).map(function(x){return x.name+(x.remaining?' ('+x.remaining+' يوم)':'');}).join('\n'),
+        icon:'icon-192.png', dir:'rtl', lang:'ar', tag:'permit-expired'
       });
-    } else if(warn.length>0){
-      new Notification('🕐 تراخيص قريبة الانتهاء',{
-        body:warn.slice(0,3).join('، ')+(warn.length>3?' و'+(warn.length-3)+' آخرين':''),
-        icon:'/icon-192.png',dir:'rtl',lang:'ar',tag:'warn'
+    } else if(warning.length>0){
+      new Notification('🕐 إشارات قريبة الانتهاء',{
+        body:warning.slice(0,3).map(function(x){return x.name+(x.remaining?' (باقى '+x.remaining+' يوم)':'');}).join('\n'),
+        icon:'icon-192.png', dir:'rtl', lang:'ar', tag:'permit-warn'
       });
     }
   }
 }
-function showAlertBanner(expired,warn){
+
+function showPermitBanner(expired, warning){
   var banner=document.getElementById('alertBanner');
   var list=document.getElementById('alertList');
   var all=[];
-  for(var i=0;i<Math.min(expired.length,5);i++)
-    all.push('<div class="alert-item">🔴 '+esc(expired[i])+' — منتهى</div>');
-  for(var j=0;j<Math.min(warn.length,5);j++)
-    all.push('<div class="alert-item">🟡 '+esc(warn[j])+' — قريب الانتهاء</div>');
+  for(var i=0;i<Math.min(expired.length,5);i++){
+    var x=expired[i];
+    all.push('<div class="alert-item">🔴 '+esc(x.name)+'<div class="alert-sub">الإشارة منتهية'+(x.remaining?' — '+x.remaining+' يوم':x.end?' — '+x.end:'')+'</div></div>');
+  }
+  for(var j=0;j<Math.min(warning.length,5);j++){
+    var x=warning[j];
+    all.push('<div class="alert-item">🟡 '+esc(x.name)+'<div class="alert-sub">باقى '+(x.remaining||'')+ ' يوم على نهاية الإشارة</div></div>');
+  }
   if(all.length>0){
     list.innerHTML=all.join('');
-    var extra=expired.length+warn.length-10;
-    if(extra>0) list.innerHTML+='<div class="alert-more">و '+extra+' سجلات أخرى...</div>';
+    var extra=expired.length+warning.length-10;
+    if(extra>0)list.innerHTML+='<div class="alert-more">و '+extra+' سجلات أخرى...</div>';
     banner.classList.add('show');
-  } else { banner.classList.remove('show'); }
+  } else {
+    banner.classList.remove('show');
+  }
 }
 
-// Data
+// ── DATA ─────────────────────────────────────
 function loadData(){
   document.getElementById('loadArea').style.display='block';
-  document.getElementById('mainArea').style.display='none';
   document.getElementById('loadArea').innerHTML='<div class="spinner"></div><br>جاري تحميل البيانات...';
+  document.getElementById('resEl').innerHTML='';
+  document.getElementById('stEl').textContent='جاري التحميل...';
   var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid='+GID;
   fetch(url)
-    .then(function(r){if(!r.ok)throw new Error();return r.text();})
+    .then(function(r){if(!r.ok)throw 0; return r.text();})
     .then(function(csv){
       DATA=parseCSV(csv);
       document.getElementById('loadArea').style.display='none';
-      document.getElementById('mainArea').style.display='block';
       document.getElementById('rtEl').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-EG');
       document.getElementById('stEl').textContent='تم تحميل '+DATA.length+' سجل — اكتب للبحث';
-      document.getElementById('qInput').focus();
-      checkAndNotify();
+      checkPermitAlerts();
     })
     .catch(function(){
-      var url2='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid='+GID;
       document.getElementById('loadArea').innerHTML=
-        '<div class="err-box">&#9888; تعذر تحميل البيانات<br>تأكد ان الشيت مضبوط على "Anyone with the link can view"<br><code>'+url2+'</code><br><button class="rbtn2" onclick="loadData()">&#8635; اعادة المحاولة</button></div>';
+        '<div class="err-box">⚠ تعذر تحميل البيانات<br>تأكد أن الشيت مضبوط على "Anyone with the link can view"<br>'+
+        '<code>https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid='+GID+'</code>'+
+        '<br><button class="rbtn2" onclick="loadData()">↻ إعادة المحاولة</button></div>';
     });
 }
 
 function parseCSV(text){
   var lines=text.split('\n'),result=[],headerFound=false;
   for(var i=0;i<lines.length;i++){
-    var cells=splitLine(lines[i]);
-    if(!cells||cells.length<3)continue;
+    var c=splitLine(lines[i]);
+    if(!c||c.length<3)continue;
     if(!headerFound){
-      var r=cells.join(' ');
-      if(r.indexOf('\u0627\u0644\u0627\u0633\u0645')>=0||r.indexOf('\u0628\u0637\u0627\u0642\u0629')>=0){headerFound=true;}
+      if(c.join(' ').indexOf('\u0627\u0644\u0627\u0633\u0645')>=0||c.join(' ').indexOf('\u0628\u0637\u0627\u0642\u0629')>=0){headerFound=true;}
       continue;
     }
-    while(cells.length<16)cells.push('');
-    var name=tr(cells[1]),id=tr(cells[2]);
+    while(c.length<16)c.push('');
+    var name=tr(c[1]),id=tr(c[2]);
     if(!name&&!id)continue;
-    var n1=tr(cells[5]),t1=tr(cells[4]),n2=tr(cells[8]),t2=tr(cells[7]);
+    var n1=tr(c[5]),t1=tr(c[4]),n2=tr(c[8]),t2=tr(c[7]);
     result.push({
-      no:tr(cells[0]),name:name,id:id,
-      train1:t1,num1:n1,exp1:tr(cells[6]),
-      train2:t2,num2:n2,exp2:tr(cells[9]),
-      contractor:tr(cells[10]),start:tr(cells[11]),
-      end:tr(cells[12]),remaining:tr(cells[13]),
-      plate1:tr(cells[14])||(n1&&t1?n1+' '+t1:''),
-      plate2:tr(cells[15])||(n2&&t2?n2+' '+t2:'')
+      no:tr(c[0]),name:name,id:id,
+      train1:t1,num1:n1,exp1:tr(c[6]),
+      train2:t2,num2:n2,exp2:tr(c[9]),
+      contractor:tr(c[10]),start:tr(c[11]),
+      end:tr(c[12]),remaining:tr(c[13]),
+      plate1:tr(c[14])||(n1&&t1?n1+' '+t1:''),
+      plate2:tr(c[15])||(n2&&t2?n2+' '+t2:'')
     });
   }
   return result;
 }
 function tr(s){return(s||'').trim().replace(/^"|"$/g,'');}
-function splitLine(line){
-  var res=[],cur='',inQ=false;
-  for(var i=0;i<line.length;i++){
-    var c=line[i];
-    if(c==='"'){inQ=!inQ;}
-    else if(c===','&&!inQ){res.push(cur);cur='';}
-    else{cur+=c;}
+function splitLine(l){
+  var r=[],c='',q=false;
+  for(var i=0;i<l.length;i++){
+    if(l[i]==='"'){q=!q;}
+    else if(l[i]===','&&!q){r.push(c);c='';}
+    else{c+=l[i];}
   }
-  res.push(cur);return res;
+  r.push(c);return r;
 }
 function expClass(s){
   if(!s)return'';
@@ -433,7 +409,7 @@ function expClass(s){
   return diff<0?'danger':diff<60?'warn':'ok';
 }
 
-// Search
+// ── SEARCH ───────────────────────────────────
 function setField(f,idx){
   FIELD=f;
   for(var i=0;i<5;i++){var el=document.getElementById('t'+i);if(el)el.classList.toggle('on',i===idx);}
@@ -442,7 +418,10 @@ function setField(f,idx){
 function doSearch(){
   var q=document.getElementById('qInput').value.trim();
   var stEl=document.getElementById('stEl'),resEl=document.getElementById('resEl');
-  if(q.length<2){stEl.textContent='تم تحميل '+DATA.length+' سجل — اكتب للبحث';resEl.innerHTML='';return;}
+  if(q.length<2){
+    stEl.textContent=DATA.length?'تم تحميل '+DATA.length+' سجل — اكتب للبحث':'جاري التحميل...';
+    resEl.innerHTML=''; return;
+  }
   var hits=[];
   for(var i=0;i<DATA.length;i++){
     var x=DATA[i];
@@ -455,8 +434,9 @@ function doSearch(){
   for(var j=0;j<max;j++){
     var x=DATA[hits[j]];
     var e1=expClass(x.exp1),e2=expClass(x.exp2);
+    var ps=getPermitStatus(x.remaining,x.end);
     html+='<div class="card">';
-    html+='<div class="card-header"><div class="card-name-wrap"><div class="card-name">'+esc(x.name||'—')+'</div>';
+    html+='<div class="card-header"><div><div class="card-name">'+esc(x.name||'—')+'</div>';
     if(x.id)html+='<div class="card-id-small">'+esc(x.id)+'</div>';
     html+='</div><div class="card-no"># '+esc(x.no)+'</div></div>';
     html+='<div class="field-grid">';
@@ -466,16 +446,14 @@ function doSearch(){
     html+=fld('المقطورة',x.plate2||x.num2,'');
     html+=fld('انتهاء المقطورة',x.exp2,e2);
     html+=fld('أول الإشارة',x.start,'');
-    html+=fld('نهاية الإشارة',x.end,'');
-    html+=fld('باقى على الانتهاء',x.remaining,'');
+    html+=fld('نهاية الإشارة',x.end, ps==='danger'?'danger':ps==='warn'?'warn':'');
+    html+=fld('باقى على الانتهاء',x.remaining, ps==='danger'?'danger':ps==='warn'?'warn':'');
     html+='</div>';
     var b='';
     if(x.plate1)b+='<span class="badge bb">'+esc(x.plate1)+'</span>';
     if(x.plate2)b+='<span class="badge bg">'+esc(x.plate2)+'</span>';
-    if(e1==='danger')b+='<span class="badge br">⚠ القاطرة منتهية</span>';
-    else if(e1==='warn')b+='<span class="badge ba">⏰ قريبة الانتهاء</span>';
-    if(e2==='danger')b+='<span class="badge br">⚠ المقطورة منتهية</span>';
-    else if(e2==='warn')b+='<span class="badge ba">⏰ قريبة الانتهاء</span>';
+    if(ps==='danger')b+='<span class="badge br">⚠ الإشارة منتهية</span>';
+    else if(ps==='warn')b+='<span class="badge ba">⏰ الإشارة قريبة الانتهاء</span>';
     if(b)html+='<div class="badge-row">'+b+'</div>';
     html+='</div>';
   }
@@ -483,23 +461,22 @@ function doSearch(){
   resEl.innerHTML=html;
 }
 function fld(label,v,ec){
-  var valHtml=v?'<div class="fv '+(ec||'')+'">'+esc(v)+'</div>':'<div class="fv empty">—</div>';
-  return'<div class="field"><div class="fl">'+label+'</div>'+valHtml+'</div>';
+  return'<div class="field"><div class="fl">'+label+'</div>'+(v?'<div class="fv '+(ec||'')+'">'+esc(v)+'</div>':'<div class="fv empty">—</div>')+'</div>';
 }
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // Toast
-var toastTimer=null;
+var tt=null;
 function showToast(msg){
   var t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  if(toastTimer)clearTimeout(toastTimer);
-  toastTimer=setTimeout(function(){t.classList.remove('show');},3000);
+  t.textContent=msg;t.classList.add('show');
+  if(tt)clearTimeout(tt);
+  tt=setTimeout(function(){t.classList.remove('show');},3000);
 }
 
 // Init
 notifEnabled=localStorage.getItem('notif')==='1';
-if(notifEnabled&&Notification.permission!=='granted'){notifEnabled=false;}
+if(notifEnabled&&typeof Notification!=='undefined'&&Notification.permission!=='granted'){notifEnabled=false;}
 updateNotifBtn();
 document.getElementById('qInput').addEventListener('input',doSearch);
 setInterval(loadData,30*60*1000);
