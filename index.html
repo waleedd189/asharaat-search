@@ -5,475 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
 <meta name="theme-color" content="#0a0e1a" id="themeColorMeta">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-<title>نظام الإشارات - تصميم نظيف</title>
+<title>نظام الإشارات - Firebase</title>
+<!-- Firebase SDK v10.12.2 -->
+<script type="importmap">
+  {
+    "imports": {
+      "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+      "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+      "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+    }
+  }
+</script>
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-  }
-  body {
-    font-family: 'Cairo', system-ui, sans-serif;
-    direction: rtl;
-    min-height: 100vh;
-  }
-  .wrap {
-    padding: 12px;
-    max-width: 640px;
-    margin: 0 auto;
-    padding-bottom: 80px;
-  }
-  /* ========== الثيم الداكن (الافتراضي) ========== */
-  body.dark-theme {
-    background: #0a0e1a;
-    color: #e2e8f0;
-  }
-  body.dark-theme .card,
-  body.dark-theme .header,
-  body.dark-theme .login-container,
-  body.dark-theme .admin-container,
-  body.dark-theme .search-box input,
-  body.dark-theme .tab,
-  body.dark-theme .install-bar,
-  body.dark-theme .alert-banner,
-  body.dark-theme .toast {
-    background: #0f1829;
-    border-color: #1e2d4a;
-  }
-  body.dark-theme input,
-  body.dark-theme button {
-    background: #111827;
-    border-color: #1e2d4a;
-    color: #fff;
-  }
-  body.dark-theme .tab.on {
-    background: #2563eb;
-  }
-  body.dark-theme .field {
-    background: #0f1829;
-  }
-  body.dark-theme .field-grid {
-    background: #1a2535;
-  }
-  /* ========== الثيم الفاتح ========== */
-  body.light-theme {
-    background: #f1f5f9;
-    color: #0f172a;
-  }
-  body.light-theme .card,
-  body.light-theme .header,
-  body.light-theme .login-container,
-  body.light-theme .admin-container,
-  body.light-theme .search-box input,
-  body.light-theme .tab,
-  body.light-theme .install-bar,
-  body.light-theme .alert-banner,
-  body.light-theme .toast {
-    background: #ffffff;
-    border-color: #cbd5e1;
-  }
-  body.light-theme input,
-  body.light-theme button {
-    background: #fff;
-    border-color: #cbd5e1;
-    color: #0f172a;
-  }
-  body.light-theme .tab.on {
-    background: #2563eb;
-    color: #fff;
-  }
-  body.light-theme .field {
-    background: #ffffff;
-  }
-  body.light-theme .field-grid {
-    background: #e2e8f0;
-  }
-  body.light-theme .badge.bb {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-  body.light-theme .badge.bg {
-    background: #dcfce7;
-    color: #166534;
-  }
-  /* ========== العناصر المشتركة ========== */
-  .card {
-    border-radius: 16px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    border: 1px solid;
-  }
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid;
-    border-color: inherit;
-  }
-  .card-name {
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .card-id-small {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 3px;
-  }
-  .card-no {
-    font-size: 11px;
-    background: rgba(0,0,0,0.2);
-    padding: 2px 8px;
-    border-radius: 20px;
-  }
-  .field-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  .field {
-    padding: 6px 8px;
-  }
-  .fl {
-    font-size: 11px;
-    color: #94a3b8;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  .fv {
-    font-size: 14px;
-    font-weight: 500;
-    word-break: break-word;
-  }
-  .fv.empty {
-    color: #5c6b8a;
-  }
-  .fv.danger {
-    color: #f87171;
-  }
-  .fv.warn {
-    color: #fbbf24;
-  }
-  .badge-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 4px;
-  }
-  .badge {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-  }
-  .badge.bb {
-    background: #0f2744;
-    color: #60a5fa;
-  }
-  .badge.bg {
-    background: #052e16;
-    color: #4ade80;
-  }
-  .badge.ba {
-    background: #2c1500;
-    color: #fb923c;
-  }
-  .badge.br {
-    background: #200a0a;
-    color: #f87171;
-  }
-  /* تحسين رأس الصفحة */
-  .header {
-    border-radius: 20px;
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    border: 1px solid;
-  }
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .app-title {
-    font-size: 18px;
-    font-weight: 900;
-  }
-  .app-title span {
-    color: #3b82f6;
-  }
-  .app-sub {
-    font-size: 11px;
-    color: #64748b;
-  }
-  .header-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-  .notif-btn, .logout-btn, .admin-link, .theme-toggle {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 30px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  body.light-theme .notif-btn,
-  body.light-theme .logout-btn,
-  body.light-theme .admin-link,
-  body.light-theme .theme-toggle {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-  }
-  .theme-toggle {
-    background: none;
-    font-size: 18px;
-    padding: 2px 8px;
-  }
-  /* بحث وتبويبات */
-  .search-box {
-    position: relative;
-    margin-bottom: 10px;
-  }
-  .search-box input {
-    width: 100%;
-    padding: 10px 40px 10px 12px;
-    font-size: 14px;
-    border-radius: 40px;
-    border: 1px solid;
-    outline: none;
-  }
-  .sico {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-  }
-  .tab-row {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    margin-bottom: 10px;
-  }
-  .tab {
-    padding: 5px 14px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    cursor: pointer;
-    border: 1px solid;
-  }
-  .tab.on {
-    background: #2563eb;
-    color: white;
-    border-color: #2563eb;
-  }
-  .toprow {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  .stats, .rbtn {
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .rbtn {
-    background: none;
-    border: none;
-    color: #3b82f6;
-    cursor: pointer;
-  }
-  /* التنبيهات */
-  .alert-banner {
-    border-radius: 14px;
-    padding: 12px;
-    margin-top: 10px;
-    display: none;
-  }
-  .alert-banner.show {
-    display: block;
-  }
-  .alert-title {
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .alert-item {
-    font-size: 13px;
-    padding: 4px 0;
-  }
-  .alert-sub {
-    font-size: 11px;
-    opacity: 0.8;
-  }
-  .alert-more {
-    font-size: 11px;
-    margin-top: 4px;
-  }
-  /* باقي العناصر */
-  .login-container, .admin-container {
-    border-radius: 28px;
-    padding: 24px;
-    text-align: center;
-  }
-  .login-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 14px;
-    border-radius: 16px;
-    border: 1px solid;
-  }
-  .login-btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 16px;
-    font-weight: 700;
-    background: #2563eb;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  .password-wrapper {
-    position: relative;
-  }
-  .toggle-pwd {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    width: auto;
-  }
-  .flex {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .hidden {
-    display: none;
-  }
-  .loading {
-    text-align: center;
-    padding: 30px;
-  }
-  .spinner {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border: 3px solid #334155;
-    border-top-color: #3b82f6;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  .toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    border-radius: 40px;
-    padding: 8px 20px;
-    font-size: 13px;
-    z-index: 999;
-    transition: 0.3s;
-    white-space: nowrap;
-  }
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-  }
-  .install-bar {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    border-radius: 60px;
-    padding: 8px 16px;
-    margin-top: 12px;
-  }
-  .install-bar.show {
-    display: flex;
-  }
-  .footer {
-    text-align: center;
-    margin-top: 24px;
-    padding: 16px;
-    font-size: 12px;
-    border-top: 1px solid;
-  }
-  .quran-link {
-    display: inline-block;
-    text-decoration: none;
-    background: #0f2744;
-    padding: 8px 16px;
-    border-radius: 40px;
-    color: #4ade80;
-    font-weight: 700;
-  }
-  body.light-theme .quran-link {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-  .err-box {
-    background: #7f1d1d;
-    padding: 12px;
-    border-radius: 16px;
-    text-align: center;
-  }
+  *{box-sizing:border-box;margin:0;padding:0;transition:background 0.2s,color 0.2s}
+  body{font-family:'Cairo',sans-serif;direction:rtl;min-height:100vh}
+  .wrap{padding:12px;max-width:640px;margin:0 auto;padding-bottom:80px}
+  body.dark-theme{background:#0a0e1a;color:#e2e8f0}
+  body.dark-theme .card,body.dark-theme .header,body.dark-theme .login-container,body.dark-theme .search-box input,body.dark-theme .tab,body.dark-theme .install-bar,body.dark-theme .alert-banner{background:#0f1829;border-color:#1e2d4a}
+  body.dark-theme input,body.dark-theme button{background:#111827;border-color:#1e2d4a;color:#fff}
+  body.light-theme{background:#f1f5f9;color:#0f172a}
+  body.light-theme .card,body.light-theme .header,body.light-theme .login-container,body.light-theme .search-box input,body.light-theme .tab,body.light-theme .install-bar,body.light-theme .alert-banner{background:#fff;border-color:#cbd5e1}
+  body.light-theme input,body.light-theme button{background:#fff;border-color:#cbd5e1;color:#0f172a}
+  .card{border-radius:16px;padding:12px 14px;margin-bottom:10px;border:1px solid}
+  .card-header{display:flex;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid}
+  .card-name{font-size:15px;font-weight:700}
+  .card-id-small{font-size:11px;color:#64748b}
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:12px;overflow:hidden;margin-bottom:8px}
+  .field{padding:6px 8px}
+  .fl{font-size:11px;color:#94a3b8;font-weight:600}
+  .fv{font-size:14px;font-weight:500}
+  .fv.danger{color:#f87171}
+  .fv.warn{color:#fbbf24}
+  .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+  .badge.bb{background:#0f2744;color:#60a5fa}
+  .badge.bg{background:#052e16;color:#4ade80}
+  .badge.ba{background:#2c1500;color:#fb923c}
+  .badge.br{background:#200a0a;color:#f87171}
+  .header{border-radius:20px;padding:12px 16px;margin-bottom:12px;border:1px solid}
+  .header-top{display:flex;justify-content:space-between;align-items:center}
+  .app-title{font-size:18px;font-weight:900}
+  .app-title span{color:#3b82f6}
+  .app-sub{font-size:11px;color:#64748b}
+  .header-actions{display:flex;justify-content:space-between;margin-top:10px}
+  .notif-btn,.logout-btn,.admin-link,.theme-toggle{background:#1e293b;border:1px solid #334155;border-radius:30px;padding:5px 12px;font-size:12px;cursor:pointer}
+  .theme-toggle{background:none;font-size:18px;padding:2px 8px}
+  .search-box{position:relative;margin-bottom:10px}
+  .search-box input{width:100%;padding:10px 40px 10px 12px;font-size:14px;border-radius:40px;border:1px solid;outline:none}
+  .sico{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:18px}
+  .tab-row{display:flex;gap:8px;overflow-x:auto;margin-bottom:10px}
+  .tab{padding:5px 14px;border-radius:30px;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;border:1px solid}
+  .tab.on{background:#2563eb;color:#fff;border-color:#2563eb}
+  .toprow{display:flex;justify-content:space-between;margin-bottom:8px}
+  .stats{font-size:13px}
+  .rbtn{background:none;border:none;color:#3b82f6;cursor:pointer}
+  .alert-banner{border-radius:14px;padding:12px;margin-top:10px;display:none}
+  .alert-banner.show{display:block}
+  .login-container,.admin-container{border-radius:28px;padding:24px;text-align:center}
+  .login-input{width:100%;padding:12px;margin-bottom:14px;border-radius:16px;border:1px solid}
+  .login-btn{width:100%;padding:12px;border-radius:16px;background:#2563eb;color:white;border:none;cursor:pointer}
+  .password-wrapper{position:relative}
+  .toggle-pwd{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;width:auto}
+  .flex{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .hidden{display:none}
+  .loading{text-align:center;padding:30px}
+  .spinner{display:inline-block;width:30px;height:30px;border:3px solid #334155;border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:40px;padding:8px 20px;font-size:13px;z-index:999;transition:0.3s}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .install-bar{display:none;align-items:center;gap:10px;border-radius:60px;padding:8px 16px;margin-top:12px}
+  .install-bar.show{display:flex}
+  .footer{text-align:center;margin-top:24px;padding:16px;font-size:12px;border-top:1px solid}
+  .quran-link{display:inline-block;text-decoration:none;background:#0f2744;padding:8px 16px;border-radius:40px;color:#4ade80;font-weight:700}
+  body.light-theme .quran-link{background:#dbeafe;color:#1e40af}
 </style>
 </head>
 <body class="dark-theme">
 <div class="wrap">
-  <!-- شاشة الدخول -->
+  <!-- شاشة تسجيل الدخول -->
   <div id="loginView">
     <div class="login-container">
       <div class="app-title" style="font-size:28px">بحث <span>الاشارات</span></div>
-      <div class="app-sub" style="margin-bottom:24px">تسجيل الدخول بكلمة مرور فردية</div>
+      <div class="app-sub" style="margin-bottom:24px">تسجيل الدخول الآمن عبر Firebase</div>
       <input type="email" id="loginEmail" class="login-input" placeholder="البريد الإلكتروني">
       <div class="password-wrapper">
         <input type="password" id="loginPassword" class="login-input" placeholder="كلمة المرور" style="margin-bottom:0">
         <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('loginPassword')">👁️</button>
       </div>
       <button class="login-btn" onclick="performLogin()" style="margin-top:18px">دخول</button>
-      <div id="loginMessage" class="login-error" style="display:none; margin-top:12px"></div>
-      <div class="flex" style="justify-content:center; margin-top:16px">
-        <button class="admin-link" onclick="showAdminLogin()">👑 دخول الأدمن</button>
-      </div>
+      <div id="loginMessage" class="login-error" style="display:none; margin-top:12px;color:#f87171"></div>
     </div>
   </div>
 
-  <!-- شاشة دخول الأدمن -->
-  <div id="adminLoginView" class="hidden">
-    <div class="login-container">
-      <div class="app-title">🛠️ <span>لوحة الأدمن</span></div>
-      <input type="email" id="adminEmail" class="login-input" placeholder="البريد السري للأدمن">
-      <div class="password-wrapper">
-        <input type="password" id="adminPassword" class="login-input" placeholder="كلمة سر الأدمن" style="margin-bottom:0">
-        <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('adminPassword')">👁️</button>
-      </div>
-      <button class="login-btn" onclick="adminLogin()">دخول لوحة التحكم</button>
-      <div id="adminLoginError" style="display:none" class="login-error"></div>
-      <button onclick="backToMainLogin()" style="background:#475569; margin-top:12px">↩ العودة</button>
-    </div>
-  </div>
-
-  <!-- لوحة أدمن -->
+  <!-- لوحة تحكم الأدمن -->
   <div id="adminPanel" class="hidden">
     <div class="admin-container" style="text-align:right">
       <div class="flex" style="justify-content:space-between">
         <div class="app-title">⚙️ <span>إدارة المستخدمين</span></div>
-        <button class="logout-btn" onclick="logoutAdmin()">تسجيل خروج</button>
+        <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
       </div>
       <div style="background:#1e293b; padding:12px; border-radius:20px; margin:16px 0">
         <h3>➕ إضافة مستخدم جديد</h3>
@@ -483,248 +111,207 @@
             <input type="password" id="newPass" placeholder="كلمة المرور" class="login-input" style="margin-bottom:0">
             <button type="button" class="toggle-pwd" onclick="togglePasswordVisibility('newPass')" style="left:8px">👁️</button>
           </div>
-          <button onclick="addUserBtn()" style="width:auto; background:#16a34a; padding:10px 16px">إضافة</button>
+          <button onclick="addNewUser()" style="width:auto; background:#16a34a; padding:10px 16px">إضافة</button>
         </div>
       </div>
-      <h3>📧 قائمة المستخدمين</h3>
+      <h3>📧 قائمة المستخدمين المسموح لهم</h3>
       <div id="usersList">جاري التحميل...</div>
-      <div id="adminMsg" style="display:none; margin-top:12px"></div>
+      <div id="adminMsg" style="display:none; margin-top:12px; padding:10px; border-radius:16px"></div>
     </div>
   </div>
 
-  <!-- التطبيق الرئيسي -->
+  <!-- التطبيق الرئيسي للمستخدم العادي -->
   <div id="mainApp" class="hidden">
     <div class="header">
       <div class="header-top">
-        <div>
-          <div class="app-title">بحث <span>الاشارات</span></div>
-          <div class="app-sub">تصاريح النقل الثقيل</div>
-        </div>
-        <div class="flex">
-          <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
-          <button class="logout-btn" onclick="logoutUser()">خروج</button>
-        </div>
+        <div><div class="app-title">بحث <span>الاشارات</span></div><div class="app-sub">تصاريح النقل الثقيل</div></div>
+        <div class="flex"><button class="theme-toggle" onclick="toggleTheme()">🌓</button><button class="logout-btn" onclick="logout()">خروج</button></div>
       </div>
-      <div class="header-actions">
-        <div class="rtime-top" id="rtEl"></div>
-        <button class="notif-btn" id="notifBtn" onclick="toggleNotif()">
-          <span class="ndot" id="notifDot"></span>
-          <span id="notifTxt">تنبيهات</span>
-        </button>
-      </div>
+      <div class="header-actions"><div class="rtime-top" id="rtEl"></div><button class="notif-btn" id="notifBtn" onclick="toggleNotif()"><span class="ndot" id="notifDot"></span><span id="notifTxt">تنبيهات</span></button></div>
     </div>
-
-    <div class="search-box">
-      <span class="sico">🔍</span>
-      <input type="search" id="qInput" placeholder="ابحث بالاسم أو الرقم القومي أو اللوحة...">
-    </div>
-    <div class="tab-row">
-      <div class="tab on" id="t0" onclick="setField('all',0)">الكل</div>
-      <div class="tab" id="t1" onclick="setField('name',1)">الاسم</div>
-      <div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div>
-      <div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div>
-      <div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div>
-    </div>
-    <div class="toprow">
-      <div class="stats" id="stEl">جاري التحميل...</div>
-      <button class="rbtn" onclick="loadData()">⟳ تحديث</button>
-    </div>
+    <div class="search-box"><span class="sico">🔍</span><input type="search" id="qInput" placeholder="ابحث بالاسم أو الرقم القومي أو اللوحة..."></div>
+    <div class="tab-row"><div class="tab on" id="t0" onclick="setField('all',0)">الكل</div><div class="tab" id="t1" onclick="setField('name',1)">الاسم</div><div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div><div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div><div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div></div>
+    <div class="toprow"><div class="stats" id="stEl">جاري التحميل...</div><button class="rbtn" onclick="loadData()">⟳ تحديث</button></div>
     <div id="loadArea" class="loading"><div class="spinner"></div><br>جاري تحميل البيانات...</div>
     <div id="resEl"></div>
-    <div class="alert-banner" id="alertBanner">
-      <div class="alert-title">⚠️ إشارات على وشك الانتهاء أو منتهية</div>
-      <div id="alertList"></div>
-    </div>
-    <div class="install-bar" id="installBar">
-      <div class="install-txt">📱 ثبّت التطبيق على هاتفك</div>
-      <button class="install-btn" onclick="doInstall()">تثبيت</button>
-    </div>
-    <div class="footer">
-      <div class="footer-label">✦ صدقة جارية ✦</div>
-      <a class="quran-link" href="https://waleedd189.github.io/radio-quran/" target="_blank">﴿ راديو قرآن ﴾</a>
-    </div>
+    <div class="alert-banner" id="alertBanner"><div class="alert-title">⚠️ إشارات على وشك الانتهاء أو منتهية</div><div id="alertList"></div></div>
+    <div class="install-bar" id="installBar"><div class="install-txt">📱 ثبّت التطبيق على هاتفك</div><button class="install-btn" onclick="doInstall()">تثبيت</button></div>
+    <div class="footer"><div class="footer-label">✦ صدقة جارية ✦</div><a class="quran-link" href="https://waleedd189.github.io/radio-quran/" target="_blank">﴿ راديو قرآن ﴾</a></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
-  // --------------------------- الثيم ---------------------------
-  function setTheme(theme) {
-    document.body.classList.remove('dark-theme', 'light-theme');
-    document.body.classList.add(theme);
-    localStorage.setItem('app_theme', theme);
-  }
-  function toggleTheme() {
-    const isDark = document.body.classList.contains('dark-theme');
-    setTheme(isDark ? 'light-theme' : 'dark-theme');
-  }
-  const savedTheme = localStorage.getItem('app_theme');
-  if (savedTheme && (savedTheme === 'dark-theme' || savedTheme === 'light-theme')) setTheme(savedTheme);
-  else setTheme('dark-theme');
+<script type="module">
+  // ==================== إعدادات Firebase ====================
+  const firebaseConfig = {
+    apiKey: "AIzaSyA0FZB-z9EvQS6HX0Z7tctM1e22oZeJAsI",
+    authDomain: "signalsapp-e7b62.firebaseapp.com",
+    projectId: "signalsapp-e7b62",
+    storageBucket: "signalsapp-e7b62.firebasestorage.app",
+    messagingSenderId: "795849692282",
+    appId: "1:795849692282:web:07ae2ee9ee76cdc57897c3"
+  };
 
-  // --------------------------- دوال التشفير والمستخدمين ---------------------------
-  async function hashString(str) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-  const STORAGE_USERS = "signal_users_v2";
-  const ADMIN_EMAIL = "admin@system.com";
-  const ADMIN_PASS = "admin123";
+  import { initializeApp } from "firebase/app";
+  import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
+  import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from "firebase/firestore";
 
-  function loadUsers() {
-    let stored = localStorage.getItem(STORAGE_USERS);
-    if (stored) return JSON.parse(stored);
-    return [{ email: "user1@test.com", passwordHash: "" }, { email: "user2@test.com", passwordHash: "" }];
-  }
-  async function initDefaultHashes() {
-    let users = loadUsers();
-    let changed = false;
-    for (let u of users) if (!u.passwordHash) { u.passwordHash = await hashString("123456"); changed = true; }
-    if (changed) localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-  }
-  initDefaultHashes();
-  async function saveUsers(users) { localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
-  async function addUser(email, plainPassword) {
-    let users = loadUsers();
-    if (users.find(u => u.email === email)) return false;
-    users.push({ email, passwordHash: await hashString(plainPassword) });
-    await saveUsers(users);
-    return true;
-  }
-  async function deleteUser(email) {
-    let users = loadUsers();
-    const newUsers = users.filter(u => u.email !== email);
-    if (newUsers.length === users.length) return false;
-    await saveUsers(newUsers);
-    return true;
-  }
-  async function changePassword(email, newPlain) {
-    let users = loadUsers();
-    const u = users.find(u => u.email === email);
-    if (!u) return false;
-    u.passwordHash = await hashString(newPlain);
-    await saveUsers(users);
-    return true;
-  }
-  async function verifyUser(email, plain) {
-    let users = loadUsers();
-    const u = users.find(u => u.email === email);
-    if (!u) return false;
-    return u.passwordHash === await hashString(plain);
-  }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // --------------------------- دوال الدخول ---------------------------
+  // دوال مساعدة للواجهة
+  window.togglePasswordVisibility = (id) => {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  };
+
+  // تسجيل الدخول
   window.performLogin = async () => {
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPassword').value.trim();
-    const msg = document.getElementById('loginMessage');
-    if (!email || !pass) { msg.innerText = 'يرجى ملء الحقول'; msg.style.display = 'block'; return; }
-    if (await verifyUser(email, pass)) {
-      localStorage.setItem('current_user', email);
-      showMainApp();
-    } else {
-      msg.innerText = 'بريد أو كلمة مرور غير صحيحة';
-      msg.style.display = 'block';
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const msgDiv = document.getElementById('loginMessage');
+    if (!email || !password) { msgDiv.innerText = 'يرجى ملء الحقول'; msgDiv.style.display = 'block'; return; }
+    try {
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      const uid = userCred.user.uid;
+      const userDoc = await getDoc(doc(db, "allowedUsers", uid));
+      if (!userDoc.exists()) {
+        await signOut(auth);
+        msgDiv.innerText = 'غير مصرح لك بدخول هذا التطبيق';
+        msgDiv.style.display = 'block';
+        return;
+      }
+      const isAdmin = userDoc.data().isAdmin === true;
+      if (isAdmin) {
+        document.getElementById('adminPanel').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginView').classList.add('hidden');
+        loadUsersList();
+      } else {
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+        document.getElementById('loginView').classList.add('hidden');
+        if (typeof loadData === 'function') loadData();
+      }
+    } catch (err) {
+      msgDiv.innerText = 'فشل الدخول: ' + err.message;
+      msgDiv.style.display = 'block';
     }
   };
-  function showMainApp() {
-    document.getElementById('loginView').classList.add('hidden');
-    document.getElementById('adminLoginView').classList.add('hidden');
-    document.getElementById('adminPanel').classList.add('hidden');
-    document.getElementById('mainApp').classList.remove('hidden');
-    if (typeof loadData === 'function') loadData();
-  }
-  window.logoutUser = () => {
-    localStorage.removeItem('current_user');
+
+  window.logout = async () => {
+    await signOut(auth);
     document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('adminPanel').classList.add('hidden');
     document.getElementById('loginView').classList.remove('hidden');
   };
-  // دوال الأدمن
-  window.showAdminLogin = () => {
-    document.getElementById('loginView').classList.add('hidden');
-    document.getElementById('adminLoginView').classList.remove('hidden');
-  };
-  window.adminLogin = () => {
-    const email = document.getElementById('adminEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('adminPassword').value.trim();
-    const err = document.getElementById('adminLoginError');
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-      document.getElementById('adminLoginView').classList.add('hidden');
-      document.getElementById('adminPanel').classList.remove('hidden');
-      renderUsersList();
-    } else {
-      err.innerText = 'بيانات غير صحيحة';
-      err.style.display = 'block';
-    }
-  };
-  async function renderUsersList() {
+
+  // إدارة المستخدمين (للوحة الأدمن)
+  async function loadUsersList() {
     const container = document.getElementById('usersList');
-    const users = loadUsers();
-    if (!users.length) { container.innerHTML = '<p>لا يوجد مستخدمون</p>'; return; }
-    let html = '<ul style="list-style:none">';
-    for (let u of users) {
-      html += `<li style="display:flex; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:6px">
-        <span>📧 ${u.email}</span>
-        <div style="display:flex; gap:5px">
-          <button onclick="changeUserPassword('${u.email}')" style="background:#2563eb; border:none; padding:4px 12px; border-radius:20px; color:white">تغيير كلمة المرور</button>
-          <button onclick="deleteUserByEmail('${u.email}')" style="background:#7f1d1d; border:none; padding:4px 12px; border-radius:20px; color:white">حذف</button>
-        </div>
-      </li>`;
+    container.innerHTML = 'جاري التحميل...';
+    try {
+      const snapshot = await getDocs(collection(db, "allowedUsers"));
+      let html = '<ul style="list-style:none">';
+      for (const docSnap of snapshot.docs) {
+        const data = docSnap.data();
+        const uid = docSnap.id;
+        const email = data.email || uid;
+        html += `<li style="display:flex; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:6px">
+          <span>📧 ${email}</span>
+          <div style="display:flex; gap:5px">
+            <button onclick="toggleAdmin('${uid}')" style="background:#2563eb; border:none; padding:4px 12px; border-radius:20px; color:white">${data.isAdmin ? 'إلغاء الأدمن' : 'جعله أدمن'}</button>
+            <button onclick="deleteUserAccount('${uid}')" style="background:#7f1d1d; border:none; padding:4px 12px; border-radius:20px; color:white">حذف</button>
+          </div>
+        </li>`;
+      }
+      html += '</ul>';
+      container.innerHTML = html;
+    } catch(e) {
+      container.innerHTML = '<p>خطأ في التحميل</p>';
     }
-    html += '</ul>';
-    container.innerHTML = html;
   }
-  window.addUserBtn = async () => {
-    const email = document.getElementById('newEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('newPass').value.trim();
-    if (!email || !pass) { showAdminMsg('املأ الحقول', true); return; }
-    const ok = await addUser(email, pass);
-    if (ok) {
+
+  window.addNewUser = async () => {
+    const email = document.getElementById('newEmail').value.trim();
+    const password = document.getElementById('newPass').value.trim();
+    if (!email || !password) { showAdminMsg('املأ الإيميل وكلمة المرور', true); return; }
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCred.user.uid;
+      await setDoc(doc(db, "allowedUsers", uid), { email, isAdmin: false, createdAt: new Date().toISOString() });
       showAdminMsg(`✅ تمت إضافة ${email}`, false);
       document.getElementById('newEmail').value = '';
       document.getElementById('newPass').value = '';
-      renderUsersList();
-    } else showAdminMsg('⚠️ الإيميل موجود مسبقاً', true);
-  };
-  window.deleteUserByEmail = async (email) => {
-    if (!confirm(`حذف ${email}؟`)) return;
-    if (await deleteUser(email)) { showAdminMsg('تم الحذف', false); renderUsersList(); }
-    else showAdminMsg('فشل الحذف', true);
-  };
-  window.changeUserPassword = async (email) => {
-    const newPass = prompt(`كلمة المرور الجديدة لـ ${email}`);
-    if (newPass && newPass.trim()) {
-      if (await changePassword(email, newPass.trim())) showAdminMsg('تم التغيير', false);
-      else showAdminMsg('خطأ', true);
+      loadUsersList();
+    } catch (err) {
+      showAdminMsg('خطأ: ' + err.message, true);
     }
   };
+
+  window.toggleAdmin = async (uid) => {
+    try {
+      const ref = doc(db, "allowedUsers", uid);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) return;
+      const current = snap.data().isAdmin || false;
+      await setDoc(ref, { isAdmin: !current }, { merge: true });
+      showAdminMsg(`تم ${!current ? 'ترقية' : 'إلغاء ترقية'} المستخدم`, false);
+      loadUsersList();
+    } catch(err) {
+      showAdminMsg('خطأ: ' + err.message, true);
+    }
+  };
+
+  window.deleteUserAccount = async (uid) => {
+    if (!confirm('هل أنت متأكد من حذف هذا المستخدم نهائياً؟')) return;
+    try {
+      await deleteDoc(doc(db, "allowedUsers", uid));
+      showAdminMsg(`تم حذف المستخدم. ملاحظة: احذف حسابه أيضاً من Firebase Authentication يدوياً.`, false);
+      loadUsersList();
+    } catch(err) {
+      showAdminMsg('خطأ: ' + err.message, true);
+    }
+  };
+
   function showAdminMsg(msg, isError) {
     const div = document.getElementById('adminMsg');
     div.textContent = msg;
     div.style.backgroundColor = isError ? '#7f1d1d' : '#14532d';
     div.style.color = 'white';
-    div.style.padding = '10px';
-    div.style.borderRadius = '16px';
     div.style.display = 'block';
     setTimeout(() => div.style.display = 'none', 3000);
   }
-  window.logoutAdmin = () => {
-    document.getElementById('adminPanel').classList.add('hidden');
-    document.getElementById('loginView').classList.remove('hidden');
-  };
-  window.backToMainLogin = () => {
-    document.getElementById('adminLoginView').classList.add('hidden');
-    document.getElementById('loginView').classList.remove('hidden');
-  };
-  window.togglePasswordVisibility = (id) => {
-    const i = document.getElementById(id);
-    i.type = i.type === 'password' ? 'text' : 'password';
-  };
 
-  // --------------------------- التطبيق الأصلي (بحث وجلب البيانات) ---------------------------
+  // مراقبة حالة تسجيل الدخول تلقائياً
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      const userDoc = await getDoc(doc(db, "allowedUsers", user.uid));
+      if (!userDoc.exists()) {
+        await signOut(auth);
+        return;
+      }
+      const isAdmin = userDoc.data().isAdmin === true;
+      if (isAdmin) {
+        document.getElementById('adminPanel').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginView').classList.add('hidden');
+        loadUsersList();
+      } else {
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+        document.getElementById('loginView').classList.add('hidden');
+        if (typeof loadData === 'function') loadData();
+      }
+    } else {
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById('adminPanel').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+    }
+  });
+
+  // ==================== دوال التطبيق الأساسي (البحث وجلب البيانات) ====================
   var DATA=[], FIELD='all';
   var SHEET_ID='1jmUEQg3KeRrUe5weJqFaSMFEc9Ahb8SNSqk1n0iDRnc';
   var GID='477351139';
@@ -811,20 +398,8 @@
     for(var j=0;j<max;j++){
       var x=DATA[hits[j]];
       var ps=getPermitStatus(x.remaining,x.end);
-      html+='<div class="card">';
-      html+='<div class="card-header"><div><div class="card-name">'+esc(x.name||'—')+'</div>';
-      if(x.id)html+='<div class="card-id-small">'+esc(x.id)+'</div>';
-      html+='</div><div class="card-no">#'+esc(x.no)+'</div></div>';
-      html+='<div class="field-grid">';
-      html+=fld('المقاول',x.contractor,'');
-      html+=fld('القاطرة',x.plate1||x.num1,'');
-      html+=fld('انتهاء القاطرة',x.exp1,expClass(x.exp1));
-      html+=fld('المقطورة',x.plate2||x.num2,'');
-      html+=fld('انتهاء المقطورة',x.exp2,expClass(x.exp2));
-      html+=fld('أول الإشارة',x.start,'');
-      html+=fld('نهاية الإشارة',x.end, ps==='danger'?'danger':ps==='warn'?'warn':'');
-      html+=fld('باقى على الانتهاء',x.remaining, ps==='danger'?'danger':ps==='warn'?'warn':'');
-      html+='</div>';
+      html+='<div class="card"><div class="card-header"><div><div class="card-name">'+esc(x.name||'—')+'</div>'+(x.id?'<div class="card-id-small">'+esc(x.id)+'</div>':'')+'</div><div class="card-no">#'+esc(x.no)+'</div></div>';
+      html+='<div class="field-grid">'+fld('المقاول',x.contractor,'')+fld('القاطرة',x.plate1||x.num1,'')+fld('انتهاء القاطرة',x.exp1,expClass(x.exp1))+fld('المقطورة',x.plate2||x.num2,'')+fld('انتهاء المقطورة',x.exp2,expClass(x.exp2))+fld('أول الإشارة',x.start,'')+fld('نهاية الإشارة',x.end, ps==='danger'?'danger':ps==='warn'?'warn':'')+fld('باقى على الانتهاء',x.remaining, ps==='danger'?'danger':ps==='warn'?'warn':'')+'</div>';
       var b='';
       if(x.plate1)b+='<span class="badge bb">'+esc(x.plate1)+'</span>';
       if(x.plate2)b+='<span class="badge bg">'+esc(x.plate2)+'</span>';
@@ -836,9 +411,7 @@
     if(hits.length>50)html+='<div class="empty" style="padding:14px">يعرض أول 50 من '+hits.length+'</div>';
     resEl.innerHTML=html;
   }
-  function fld(label,v,ec){
-    return'<div class="field"><div class="fl">'+label+'</div>'+(v?'<div class="fv '+(ec||'')+'">'+esc(v)+'</div>':'<div class="fv empty">—</div>')+'</div>';
-  }
+  function fld(label,v,ec){return'<div class="field"><div class="fl">'+label+'</div>'+(v?'<div class="fv '+(ec||'')+'">'+esc(v)+'</div>':'<div class="fv empty">—</div>')+'</div>';}
   function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function expClass(s){
     if(!s)return'';
@@ -848,117 +421,36 @@
     var diff=(d-Date.now())/864e5;
     return diff<0?'danger':diff<60?'warn':'ok';
   }
-  function getPermitStatus(remaining, endStr){
-    if(remaining && !isNaN(parseInt(remaining))){
-      var days=parseInt(remaining);
-      if(days<=0) return 'danger';
-      if(days<=30) return 'warn';
-      return 'ok';
-    }
-    if(endStr){
-      var p=endStr.replace(/\//g,'-').split('-');
-      var d;
-      if(p.length===3){
-        if(p[0].length===4)d=new Date(+p[0],+p[1]-1,+p[2]);
-        else d=new Date(+p[2],+p[1]-1,+p[0]);
-      }
-      if(d&&!isNaN(d.getTime())){
-        var diff=(d-Date.now())/864e5;
-        if(diff<=0) return 'danger';
-        if(diff<=30) return 'warn';
-      }
-    }
-    return '';
+  function getPermitStatus(remaining,endStr){
+    if(remaining && !isNaN(parseInt(remaining))){var days=parseInt(remaining); if(days<=0)return'danger'; if(days<=30)return'warn'; return'ok';}
+    if(endStr){var p=endStr.replace(/\//g,'-').split('-'),d; if(p.length===3){if(p[0].length===4)d=new Date(+p[0],+p[1]-1,+p[2]);else d=new Date(+p[2],+p[1]-1,+p[0]);} if(d&&!isNaN(d.getTime())){var diff=(d-Date.now())/864e5; if(diff<=0)return'danger'; if(diff<=30)return'warn';}}
+    return'';
   }
   function checkPermitAlerts(){
     if(!DATA.length)return;
     var expired=[], warning=[];
-    for(var i=0;i<DATA.length;i++){
-      var x=DATA[i];
-      var status=getPermitStatus(x.remaining, x.end);
-      if(status==='danger') expired.push({name:x.name, remaining:x.remaining, end:x.end});
-      else if(status==='warn') warning.push({name:x.name, remaining:x.remaining, end:x.end});
-    }
-    showPermitBanner(expired, warning);
-    if(notifEnabled && Notification.permission==='granted'){
-      if(expired.length>0){
-        new Notification('⚠️ إشارات منتهية',{
-          body:expired.slice(0,3).map(x=>x.name+(x.remaining?' ('+x.remaining+' يوم)':'')).join('\n'),
-          icon:'icon-192.png', dir:'rtl', lang:'ar'
-        });
-      } else if(warning.length>0){
-        new Notification('🕐 إشارات قريبة الانتهاء',{
-          body:warning.slice(0,3).map(x=>x.name+(x.remaining?' (باقى '+x.remaining+' يوم)':'')).join('\n'),
-          icon:'icon-192.png', dir:'rtl', lang:'ar'
-        });
-      }
-    }
+    for(var i=0;i<DATA.length;i++){var x=DATA[i]; var status=getPermitStatus(x.remaining,x.end); if(status==='danger')expired.push({name:x.name,remaining:x.remaining,end:x.end}); else if(status==='warn')warning.push({name:x.name,remaining:x.remaining,end:x.end});}
+    showPermitBanner(expired,warning);
+    if(notifEnabled && Notification.permission==='granted'){if(expired.length>0)new Notification('⚠️ إشارات منتهية',{body:expired.slice(0,3).map(x=>x.name+(x.remaining?' ('+x.remaining+' يوم)':'')).join('\n'),icon:'icon-192.png',dir:'rtl',lang:'ar'}); else if(warning.length>0)new Notification('🕐 إشارات قريبة الانتهاء',{body:warning.slice(0,3).map(x=>x.name+(x.remaining?' (باقى '+x.remaining+' يوم)':'')).join('\n'),icon:'icon-192.png',dir:'rtl',lang:'ar'});}
   }
-  function showPermitBanner(expired, warning){
-    var banner=document.getElementById('alertBanner');
-    var list=document.getElementById('alertList');
-    var html='';
-    var total=expired.length+warning.length;
-    if(expired.length>0){
-      var x=expired[0];
-      html='<div class="alert-item">🔴 '+esc(x.name)+'<div class="alert-sub">الإشارة منتهية'+(x.remaining?' — '+x.remaining+' يوم':x.end?' — '+x.end:'')+'</div></div>';
-      if(total>1) html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';
-      list.innerHTML=html;
-      banner.classList.add('show');
-    } else if(warning.length>0){
-      var x=warning[0];
-      html='<div class="alert-item">🟡 '+esc(x.name)+'<div class="alert-sub">باقى '+(x.remaining||'')+ ' يوم على نهاية الإشارة</div></div>';
-      if(total>1) html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';
-      list.innerHTML=html;
-      banner.classList.add('show');
-    } else {
-      banner.classList.remove('show');
-    }
-  }
-  window.toggleNotif = function(){
-    if(!('Notification' in window)){showToast('المتصفح لا يدعم التنبيهات');return;}
-    if(Notification.permission==='granted'&&notifEnabled){
-      notifEnabled=false; localStorage.setItem('notif','0');
-      updateNotifBtn(); showToast('تم إيقاف التنبيهات'); return;
-    }
-    Notification.requestPermission().then(p=>{
-      if(p==='granted'){
-        notifEnabled=true; localStorage.setItem('notif','1');
-        updateNotifBtn(); showToast('تم تفعيل التنبيهات ✓');
-        checkPermitAlerts();
-      } else { showToast('يرجى السماح بالتنبيهات'); }
-    });
-  };
-  function updateNotifBtn(){
-    var on=notifEnabled&&Notification.permission==='granted';
-    var dot=document.getElementById('notifDot');
-    if(dot) dot.classList.toggle('on',on);
-    var txt=document.getElementById('notifTxt');
-    if(txt) txt.textContent=on?'تنبيهات فعّالة':'تنبيهات';
-    var btn=document.getElementById('notifBtn');
-    if(btn) btn.classList.toggle('active',on);
-  }
-  function showToast(msg){
-    var t=document.getElementById('toast');
-    t.textContent=msg;t.classList.add('show');
-    if(window.toastTimeout) clearTimeout(window.toastTimeout);
-    window.toastTimeout=setTimeout(()=>t.classList.remove('show'),3000);
-  }
-  window.addEventListener('beforeinstallprompt',function(e){
-    e.preventDefault(); deferredPrompt=e;
-    var ib=document.getElementById('installBar');
-    if(ib) ib.classList.add('show');
-  });
-  window.doInstall = function(){
-    if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; }); }
-  };
+  function showPermitBanner(expired,warning){var banner=document.getElementById('alertBanner');var list=document.getElementById('alertList');var html='';var total=expired.length+warning.length;if(expired.length>0){var x=expired[0];html='<div class="alert-item">🔴 '+esc(x.name)+'<div class="alert-sub">الإشارة منتهية'+(x.remaining?' — '+x.remaining+' يوم':x.end?' — '+x.end:'')+'</div></div>';if(total>1)html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';list.innerHTML=html;banner.classList.add('show');} else if(warning.length>0){var x=warning[0];html='<div class="alert-item">🟡 '+esc(x.name)+'<div class="alert-sub">باقى '+(x.remaining||'')+' يوم</div></div>';if(total>1)html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';list.innerHTML=html;banner.classList.add('show');} else banner.classList.remove('show');}
+  window.toggleNotif = function(){if(!('Notification' in window)){showToast('المتصفح لا يدعم التنبيهات');return;} if(Notification.permission==='granted'&&notifEnabled){notifEnabled=false;localStorage.setItem('notif','0');updateNotifBtn();showToast('تم إيقاف التنبيهات');return;} Notification.requestPermission().then(p=>{if(p==='granted'){notifEnabled=true;localStorage.setItem('notif','1');updateNotifBtn();showToast('تم تفعيل التنبيهات ✓');checkPermitAlerts();}else showToast('يرجى السماح بالتنبيهات');});};
+  function updateNotifBtn(){var on=notifEnabled&&Notification.permission==='granted';var dot=document.getElementById('notifDot');if(dot)dot.classList.toggle('on',on);var txt=document.getElementById('notifTxt');if(txt)txt.textContent=on?'تنبيهات فعّالة':'تنبيهات';}
+  function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');if(window.toastTimeout)clearTimeout(window.toastTimeout);window.toastTimeout=setTimeout(()=>t.classList.remove('show'),3000);}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;var ib=document.getElementById('installBar');if(ib)ib.classList.add('show');});
+  window.doInstall = function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}};
   document.getElementById('qInput')?.addEventListener('input',doSearch);
   setInterval(loadData,30*60*1000);
-  if(localStorage.getItem('current_user')) showMainApp();
-  else document.getElementById('loginView').classList.remove('hidden');
   notifEnabled = localStorage.getItem('notif')==='1';
   if(notifEnabled && Notification.permission !== 'granted') notifEnabled=false;
   updateNotifBtn();
+  // الثيم
+  function setTheme(theme){document.body.classList.remove('dark-theme','light-theme');document.body.classList.add(theme);localStorage.setItem('app_theme',theme);}
+  window.toggleTheme=function(){setTheme(document.body.classList.contains('dark-theme')?'light-theme':'dark-theme');};
+  const savedTheme=localStorage.getItem('app_theme');if(savedTheme && (savedTheme==='dark-theme'||savedTheme==='light-theme'))setTheme(savedTheme);else setTheme('dark-theme');
+
+  // تحميل البيانات إذا كان المستخدم قد سجل الدخول بالفعل (من onAuthStateChanged سيتم تشغيل loadData)
+  if (auth.currentUser && document.getElementById('mainApp').classList.contains('hidden') === false) loadData();
 </script>
 </body>
 </html>
