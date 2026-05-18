@@ -287,8 +287,9 @@ if('serviceWorker' in navigator){
 // ── DATA ─────────────────────────────────────
 function drivePreview(url){
   if(!url) return '';
-  var m=url.match(/\/d\/([^/]+)/);
-  return m?'https://drive.google.com/file/d/'+m[1]+'/preview':url;
+  var m=url.match(/file\/d\/([a-zA-Z0-9_-]+)/);
+  if(m) return 'https://drive.google.com/file/d/'+m[1]+'/preview';
+  return url;
 }
 
 function loadData(){
