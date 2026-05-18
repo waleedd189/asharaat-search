@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#0a0e1a">
+<meta name="theme-color" content="#2563eb">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="الاشارات">
 <link rel="manifest" href="manifest.json">
@@ -14,7 +15,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;direction:rtl;min-height:100vh}
-.wrap{padding:14px;max-width:640px;margin:0 auto;padding-bottom:100px}
+.wrap{padding:14px;max-width:640px;margin:0 auto;padding-bottom:120px}
 
 /* ── HEADER ── */
 .header{background:#0f1829;border:1px solid #1e2d4a;border-radius:20px;padding:16px 18px;margin-bottom:14px}
@@ -23,10 +24,6 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .app-title span{color:#3b82f6}
 .app-sub{font-size:12px;color:#475569;margin-top:3px;font-weight:500}
 .header-actions{margin-top:12px;display:flex;align-items:center;justify-content:space-between}
-.notif-btn{background:#1a2535;border:1px solid #2d3f5a;border-radius:10px;padding:7px 13px;color:#94a3b8;font-size:13px;font-family:'Cairo',inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s}
-.notif-btn.active{background:#1e3a5f;border-color:#2563eb;color:#60a5fa}
-.ndot{width:7px;height:7px;border-radius:50%;background:#334155;flex-shrink:0;transition:all 0.2s}
-.ndot.on{background:#3b82f6;box-shadow:0 0 6px #3b82f6}
 .rtime-top{font-size:11px;color:#334155;font-weight:500}
 
 /* ── SEARCH ── */
@@ -49,43 +46,17 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .card-name{font-size:16px;font-weight:700;color:#ffffff;line-height:1.4}
 .card-id-small{font-size:11px;color:#475569;margin-top:3px;direction:ltr;text-align:right;letter-spacing:0.5px}
 .card-no{font-size:11px;color:#475569;background:#080c14;border-radius:7px;padding:3px 9px;font-weight:700;flex-shrink:0;margin-top:2px}
-
-/* ===== تعديلات الجدول ===== */
-.field-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:1px;
-  background:#1a2535;
-  border-radius:10px;
-  overflow:hidden;
-  margin-bottom:10px
-}
-.field{
-  padding:6px 8px;
-  background:#0f1829
-}
-.fl{
-  font-size:12px;
-  color:#94a3b8;
-  font-weight:700;
-  letter-spacing:0.5px;
-  margin-bottom:3px
-}
-.fv{
-  font-size:16px;
-  color:#f8fafc;
-  font-weight:600
-}
-.fv.empty{
-  color:#334155;
-  font-weight:400;
-  font-size:13px
-}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a2535;border-radius:10px;overflow:hidden;margin-bottom:10px}
+.field{padding:6px 8px;background:#0f1829}
+.fl{font-size:12px;color:#94a3b8;font-weight:700;letter-spacing:0.5px;margin-bottom:3px}
+.fv{font-size:16px;color:#f8fafc;font-weight:600}
+.fv.empty{color:#334155;font-weight:400;font-size:13px}
 .fv.danger{color:#f87171;font-weight:700}
 .fv.warn{color:#fbbf24;font-weight:700}
 .fv.ok{color:#34d399;font-weight:600}
-/* ========================== */
-
+.field.start-field{background:#0a1f12}
+.field.start-field .fl{color:#4ade80}
+.field.start-field .fv{color:#4ade80;font-size:18px;font-weight:900}
 .badge-row{display:flex;gap:6px;flex-wrap:wrap}
 .badge{font-size:11px;padding:4px 11px;border-radius:9px;font-weight:700}
 .bb{background:#0f2744;color:#60a5fa;border:1px solid #1e3a5f}
@@ -93,22 +64,32 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .ba{background:#2c1500;color:#fb923c;border:1px solid #451a03}
 .br{background:#200a0a;color:#f87171;border:1px solid #450a0a}
 
-/* ── ALERT ── */
-.alert-banner{background:#160a0a;border:1px solid #7f1d1d;border-radius:14px;padding:14px;margin-top:10px;display:none}
-.alert-banner.show{display:block}
-.alert-title{font-size:14px;font-weight:700;color:#f87171;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.alert-item{font-size:13px;color:#fca5a5;padding:6px 0;border-bottom:1px solid #2a0e0e;font-weight:600;line-height:1.5}
-.alert-item:last-child{border:none}
-.alert-sub{font-size:11px;color:#7f1d1d;margin-top:2px;font-weight:500}
-.alert-more{font-size:11px;color:#64748b;margin-top:8px;font-weight:500}
+/* ── INSTALL BANNER ── */
+.install-banner{
+  background:linear-gradient(135deg,#1e3a5f,#1e40af);
+  border:1px solid #3b82f6;border-radius:16px;
+  padding:16px;margin-bottom:14px;
+  display:none;animation:slideDown .4s ease
+}
+.install-banner.show{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.install-banner-title{font-size:15px;font-weight:900;color:white;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.install-banner-sub{font-size:12px;color:#93c5fd;margin-bottom:12px;line-height:1.6}
+.install-banner-btns{display:flex;gap:8px}
+.install-btn-main{flex:1;padding:10px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:'Cairo',inherit}
+.install-btn-close{padding:10px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:10px;background:transparent;color:#93c5fd;font-size:12px;cursor:pointer;font-family:'Cairo',inherit}
 
-/* ── INSTALL ── */
-.install-bar{background:#0f1829;border:1px solid #1e3a5f;border-radius:14px;padding:12px 14px;margin-top:10px;display:none;align-items:center;gap:10px}
-.install-bar.show{display:flex}
-.install-txt{font-size:13px;color:#93c5fd;flex:1;font-weight:600}
-.install-btn{padding:9px 18px;background:#2563eb;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;flex-shrink:0}
+/* iOS instructions */
+.ios-instructions{
+  background:#0d2137;border:1px solid #1e3a5f;border-radius:12px;
+  padding:14px;margin-bottom:14px;display:none
+}
+.ios-instructions.show{display:block}
+.ios-step{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a2535;font-size:13px;color:#e2e8f0}
+.ios-step:last-child{border:none}
+.ios-step-icon{font-size:20px;flex-shrink:0}
 
-/* ── LOADING / EMPTY ── */
+/* ── LOADING ── */
 .loading{text-align:center;padding:50px 20px;color:#475569;font-size:14px;font-weight:600}
 .spinner{display:inline-block;width:32px;height:32px;border:3px solid #1a2535;border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -125,6 +106,14 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .quran-title{font-size:16px;font-weight:900;color:#4ade80;display:block;line-height:1.3;font-family:'Cairo',inherit}
 .quran-sub{font-size:11px;color:#166534;display:block;margin-top:3px;font-weight:500}
 
+/* ── PERMIT BTNS ── */
+.permit-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #1a2535}
+.permit-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;font-family:'Cairo',inherit;transition:all 0.2s;flex:1;justify-content:center}
+.permit-btn-blue{background:#0f2744;border:1px solid #1e3a5f;color:#60a5fa}
+.permit-btn-blue:active{background:#1e3a5f}
+.permit-btn-green{background:#061a0d;border:1px solid #14532d;color:#4ade80}
+.permit-btn-green:active{background:#0d2414}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
 .toast.show{transform:translateX(-50%) translateY(0)}
@@ -132,6 +121,39 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 </head>
 <body>
 <div class="wrap">
+
+  <!-- INSTALL BANNER - Android -->
+  <div class="install-banner" id="installBanner">
+    <div class="install-banner-title">📲 ثبّت التطبيق على هاتفك</div>
+    <div class="install-banner-sub">
+      ثبّت تطبيق بحث الاشارات على شاشتك الرئيسية للوصول السريع بدون متصفح — مجاناً وبدون متجر تطبيقات!
+    </div>
+    <div class="install-banner-btns">
+      <button class="install-btn-main" onclick="doInstall()">📥 تثبيت الآن</button>
+      <button class="install-btn-close" onclick="dismissInstall()">لاحقاً</button>
+    </div>
+  </div>
+
+  <!-- iOS INSTRUCTIONS -->
+  <div class="ios-instructions" id="iosInstructions">
+    <div style="font-size:14px;font-weight:800;color:white;margin-bottom:12px">📲 تثبيت التطبيق على iPhone / iPad</div>
+    <div class="ios-step">
+      <span class="ios-step-icon">1️⃣</span>
+      <span>اضغط زرار <strong style="color:#3b82f6">مشاركة</strong> في الأسفل (الزرار بالسهم للأعلى)</span>
+    </div>
+    <div class="ios-step">
+      <span class="ios-step-icon">2️⃣</span>
+      <span>اختار <strong style="color:#3b82f6">"إضافة إلى الشاشة الرئيسية"</strong></span>
+    </div>
+    <div class="ios-step">
+      <span class="ios-step-icon">3️⃣</span>
+      <span>اضغط <strong style="color:#4ade80">إضافة</strong> — وخلاص! 🎉</span>
+    </div>
+    <button onclick="document.getElementById('iosInstructions').classList.remove('show')"
+      style="margin-top:10px;width:100%;padding:8px;border:1px solid #1e3a5f;border-radius:8px;background:transparent;color:#64748b;font-size:12px;cursor:pointer;font-family:'Cairo',inherit">
+      إخفاء
+    </button>
+  </div>
 
   <!-- HEADER -->
   <div class="header">
@@ -158,14 +180,10 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
     </div>
     <div class="header-actions">
       <div class="rtime-top" id="rtEl"></div>
-      <button class="notif-btn" id="notifBtn" onclick="toggleNotif()">
-        <span class="ndot" id="notifDot"></span>
-        <span id="notifTxt">تنبيه انتهاء الإشارة</span>
-      </button>
     </div>
   </div>
 
-  <!-- ① SEARCH -->
+  <!-- SEARCH -->
   <div class="search-box">
     <span class="sico">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -180,37 +198,16 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
     <div class="tab" id="t1" onclick="setField('name',1)">الاسم</div>
     <div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div>
     <div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div>
-    <div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div>
   </div>
   <div class="toprow">
     <div class="stats" id="stEl">جاري التحميل...</div>
     <button class="rbtn" onclick="loadData()">&#8635; تحديث</button>
   </div>
 
-  <!-- ② RESULTS -->
   <div id="loadArea" class="loading">
     <div class="spinner"></div><br>جاري تحميل البيانات...
   </div>
   <div id="resEl"></div>
-
-  <!-- ③ ALERTS — أول اسم بس -->
-  <div class="alert-banner" id="alertBanner">
-    <div class="alert-title">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 1L15 14H1L8 1Z" stroke="#f87171" stroke-width="1.5" stroke-linejoin="round"/>
-        <line x1="8" y1="6" x2="8" y2="10" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="8" cy="12" r="0.8" fill="#f87171"/>
-      </svg>
-      إشارات على وشك الانتهاء أو منتهية
-    </div>
-    <div id="alertList"></div>
-  </div>
-
-  <!-- ④ INSTALL -->
-  <div class="install-bar" id="installBar">
-    <div class="install-txt">&#128242; ثبّت التطبيق على هاتفك</div>
-    <button class="install-btn" onclick="doInstall()">تثبيت</button>
-  </div>
 
   <!-- FOOTER -->
   <div class="footer">
@@ -223,14 +220,9 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
         <rect x="19" y="10" width="4" height="22" rx="1.5" fill="#021a07" stroke="#16a34a" stroke-width="0.5"/>
         <rect x="7.5" y="15" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.6"/>
         <rect x="7.5" y="18" width="7" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
-        <rect x="7.5" y="21" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
-        <rect x="7.5" y="24" width="6" height="1.2" rx="0.6" fill="#4ade80" opacity="0.3"/>
         <rect x="24.5" y="15" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.6"/>
         <rect x="24.5" y="18" width="7" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
-        <rect x="24.5" y="21" width="10" height="1.2" rx="0.6" fill="#4ade80" opacity="0.4"/>
-        <rect x="24.5" y="24" width="6" height="1.2" rx="0.6" fill="#4ade80" opacity="0.3"/>
         <path d="M14 8Q21 5 28 8" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
-        <path d="M11 6Q21 2 31 6" stroke="#4ade80" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.3"/>
       </svg>
       <div>
         <span class="quran-title">﴿ راديو قرآن ﴾</span>
@@ -238,60 +230,127 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
       </div>
     </a>
   </div>
-
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 var DATA=[], FIELD='all';
 var SHEET_ID='1jmUEQg3KeRrUe5weJqFaSMFEc9Ahb8SNSqk1n0iDRnc';
 var GID='477351139';
-var deferredPrompt=null, notifEnabled=false;
+var deferredPrompt=null;
 
 // ── PWA ──────────────────────────────────────
 window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault(); deferredPrompt=e;
-  document.getElementById('installBar').classList.add('show');
+  e.preventDefault();
+  deferredPrompt=e;
+  // اعرض الـ banner بعد ثانيتين
+  setTimeout(function(){
+    document.getElementById('installBanner').classList.add('show');
+  }, 2000);
 });
+
 window.addEventListener('appinstalled',function(){
-  document.getElementById('installBar').classList.remove('show');
-  showToast('تم تثبيت التطبيق ✓');
+  document.getElementById('installBanner').classList.remove('show');
+  showToast('✅ تم تثبيت التطبيق بنجاح!');
 });
+
 function doInstall(){
-  if(!deferredPrompt)return;
+  if(!deferredPrompt) return;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then(function(r){
-    if(r.outcome==='accepted')showToast('جاري التثبيت...');
+    if(r.outcome==='accepted'){
+      showToast('🎉 جاري التثبيت...');
+      document.getElementById('installBanner').classList.remove('show');
+    }
     deferredPrompt=null;
-    document.getElementById('installBar').classList.remove('show');
   });
 }
+
+function dismissInstall(){
+  document.getElementById('installBanner').classList.remove('show');
+  localStorage.setItem('install-dismissed', Date.now());
+}
+
+// ── iOS Detection ──────────────────────────
+var isIos = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+  || window.navigator.standalone === true;
+var dismissed = localStorage.getItem('ios-install-dismissed');
+
+if(isIos && !isStandalone && !dismissed){
+  setTimeout(function(){
+    document.getElementById('iosInstructions').classList.add('show');
+  }, 2000);
+}
+
+// ── PWA Service Worker ────────────────────
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });
 }
 
-// ── NOTIFICATIONS ────────────────────────────
-function toggleNotif(){
-  if(!('Notification' in window)){showToast('المتصفح لا يدعم التنبيهات');return;}
-  if(Notification.permission==='granted'&&notifEnabled){
-    notifEnabled=false; localStorage.setItem('notif','0');
-    updateNotifBtn(); showToast('تم إيقاف التنبيهات'); return;
-  }
-  Notification.requestPermission().then(function(p){
-    if(p==='granted'){
-      notifEnabled=true; localStorage.setItem('notif','1');
-      updateNotifBtn(); showToast('تم تفعيل تنبيهات الإشارة ✓');
-      checkPermitAlerts();
-    } else { showToast('يرجى السماح بالتنبيهات من إعدادات المتصفح'); }
-  });
+// ── DATA ─────────────────────────────────────
+function loadData(){
+  document.getElementById('loadArea').style.display='block';
+  document.getElementById('loadArea').innerHTML='<div class="spinner"></div><br>جاري تحميل البيانات...';
+  document.getElementById('resEl').innerHTML='';
+  document.getElementById('stEl').textContent='جاري التحميل...';
+  var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid='+GID;
+  fetch(url)
+    .then(function(r){if(!r.ok)throw 0; return r.text();})
+    .then(function(csv){
+      DATA=parseCSV(csv);
+      document.getElementById('loadArea').style.display='none';
+      document.getElementById('rtEl').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-EG');
+      document.getElementById('stEl').textContent='تم تحميل '+DATA.length+' سجل — اكتب للبحث';
+    })
+    .catch(function(){
+      document.getElementById('loadArea').innerHTML=
+        '<div class="err-box">⚠ تعذر تحميل البيانات<br>'+
+        '<button class="rbtn2" onclick="loadData()">↻ إعادة المحاولة</button></div>';
+    });
 }
-function updateNotifBtn(){
-  var on=notifEnabled&&Notification.permission==='granted';
-  document.getElementById('notifDot').classList.toggle('on',on);
-  document.getElementById('notifTxt').textContent=on?'تنبيهات فعّالة':'تنبيه انتهاء الإشارة';
-  document.getElementById('notifBtn').classList.toggle('active',on);
+
+function parseCSV(text){
+  var lines=text.split('\n'),result=[],headerFound=false;
+  for(var i=0;i<lines.length;i++){
+    var c=splitLine(lines[i]);
+    if(!c||c.length<3)continue;
+    if(!headerFound){
+      if(c.join(' ').indexOf('\u0627\u0644\u0627\u0633\u0645')>=0||c.join(' ').indexOf('\u0628\u0637\u0627\u0642\u0629')>=0){headerFound=true;}
+      continue;
+    }
+    while(c.length<16)c.push('');
+    var name=tr(c[1]),id=tr(c[2]);
+    if(!name&&!id)continue;
+    var n1=tr(c[5]),t1=tr(c[4]),n2=tr(c[8]),t2=tr(c[7]);
+    while(c.length<18)c.push('');
+    result.push({
+      no:tr(c[0]),name:name,id:id,
+      train1:t1,num1:n1,exp1:tr(c[6]),
+      train2:t2,num2:n2,exp2:tr(c[9]),
+      contractor:tr(c[10]),start:tr(c[11]),
+      end:tr(c[12]),remaining:tr(c[13]),
+      plate1:tr(c[14])||(n1&&t1?n1+' '+t1:''),
+      plate2:tr(c[15])||(n2&&t2?n2+' '+t2:''),
+      url1:tr(c[16])||'',
+      url2:tr(c[17])||''
+    });
+  }
+  return result;
+}
+
+function tr(s){return(s||'').trim().replace(/^"|"$/g,'');}
+function splitLine(l){
+  var r=[],c='',q=false;
+  for(var i=0;i<l.length;i++){
+    if(l[i]==='"'){q=!q;}
+    else if(l[i]===','&&!q){r.push(c);c='';}
+    else{c+=l[i];}
+  }
+  r.push(c);return r;
 }
 
 function getPermitStatus(remaining, endStr){
@@ -318,115 +377,6 @@ function getPermitStatus(remaining, endStr){
   return '';
 }
 
-function checkPermitAlerts(){
-  if(!DATA.length)return;
-  var expired=[], warning=[];
-  for(var i=0;i<DATA.length;i++){
-    var x=DATA[i];
-    var status=getPermitStatus(x.remaining, x.end);
-    if(status==='danger') expired.push({name:x.name, remaining:x.remaining, end:x.end});
-    else if(status==='warn') warning.push({name:x.name, remaining:x.remaining, end:x.end});
-  }
-  showPermitBanner(expired, warning);
-  if(notifEnabled&&Notification.permission==='granted'){
-    if(expired.length>0){
-      new Notification('⚠️ إشارات منتهية',{
-        body:expired.slice(0,3).map(function(x){return x.name+(x.remaining?' ('+x.remaining+' يوم)':'');}).join('\n'),
-        icon:'icon-192.png', dir:'rtl', lang:'ar', tag:'permit-expired'
-      });
-    } else if(warning.length>0){
-      new Notification('🕐 إشارات قريبة الانتهاء',{
-        body:warning.slice(0,3).map(function(x){return x.name+(x.remaining?' (باقى '+x.remaining+' يوم)':'');}).join('\n'),
-        icon:'icon-192.png', dir:'rtl', lang:'ar', tag:'permit-warn'
-      });
-    }
-  }
-}
-
-/* ===== عرض أول اسم بس ===== */
-function showPermitBanner(expired, warning){
-  var banner=document.getElementById('alertBanner');
-  var list=document.getElementById('alertList');
-  var html='';
-  var total=expired.length+warning.length;
-
-  if(expired.length>0){
-    var x=expired[0];
-    html='<div class="alert-item">🔴 '+esc(x.name)+'<div class="alert-sub">الإشارة منتهية'+(x.remaining?' — '+x.remaining+' يوم':x.end?' — '+x.end:'')+'</div></div>';
-    if(total>1) html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';
-    list.innerHTML=html;
-    banner.classList.add('show');
-  } else if(warning.length>0){
-    var x=warning[0];
-    html='<div class="alert-item">🟡 '+esc(x.name)+'<div class="alert-sub">باقى '+(x.remaining||'')+ ' يوم على نهاية الإشارة</div></div>';
-    if(total>1) html+='<div class="alert-more">و '+(total-1)+' إشارة أخرى...</div>';
-    list.innerHTML=html;
-    banner.classList.add('show');
-  } else {
-    banner.classList.remove('show');
-  }
-}
-/* ========================== */
-
-// ── DATA ─────────────────────────────────────
-function loadData(){
-  document.getElementById('loadArea').style.display='block';
-  document.getElementById('loadArea').innerHTML='<div class="spinner"></div><br>جاري تحميل البيانات...';
-  document.getElementById('resEl').innerHTML='';
-  document.getElementById('stEl').textContent='جاري التحميل...';
-  var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid='+GID;
-  fetch(url)
-    .then(function(r){if(!r.ok)throw 0; return r.text();})
-    .then(function(csv){
-      DATA=parseCSV(csv);
-      document.getElementById('loadArea').style.display='none';
-      document.getElementById('rtEl').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-EG');
-      document.getElementById('stEl').textContent='تم تحميل '+DATA.length+' سجل — اكتب للبحث';
-      checkPermitAlerts();
-    })
-    .catch(function(){
-      document.getElementById('loadArea').innerHTML=
-        '<div class="err-box">⚠ تعذر تحميل البيانات<br>تأكد أن الشيت مضبوط على "Anyone with the link can view"<br>'+
-        '<code>https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid='+GID+'</code>'+
-        '<br><button class="rbtn2" onclick="loadData()">↻ إعادة المحاولة</button></div>';
-    });
-}
-
-function parseCSV(text){
-  var lines=text.split('\n'),result=[],headerFound=false;
-  for(var i=0;i<lines.length;i++){
-    var c=splitLine(lines[i]);
-    if(!c||c.length<3)continue;
-    if(!headerFound){
-      if(c.join(' ').indexOf('\u0627\u0644\u0627\u0633\u0645')>=0||c.join(' ').indexOf('\u0628\u0637\u0627\u0642\u0629')>=0){headerFound=true;}
-      continue;
-    }
-    while(c.length<16)c.push('');
-    var name=tr(c[1]),id=tr(c[2]);
-    if(!name&&!id)continue;
-    var n1=tr(c[5]),t1=tr(c[4]),n2=tr(c[8]),t2=tr(c[7]);
-    result.push({
-      no:tr(c[0]),name:name,id:id,
-      train1:t1,num1:n1,exp1:tr(c[6]),
-      train2:t2,num2:n2,exp2:tr(c[9]),
-      contractor:tr(c[10]),start:tr(c[11]),
-      end:tr(c[12]),remaining:tr(c[13]),
-      plate1:tr(c[14])||(n1&&t1?n1+' '+t1:''),
-      plate2:tr(c[15])||(n2&&t2?n2+' '+t2:'')
-    });
-  }
-  return result;
-}
-function tr(s){return(s||'').trim().replace(/^"|"$/g,'');}
-function splitLine(l){
-  var r=[],c='',q=false;
-  for(var i=0;i<l.length;i++){
-    if(l[i]==='"'){q=!q;}
-    else if(l[i]===','&&!q){r.push(c);c='';}
-    else{c+=l[i];}
-  }
-  r.push(c);return r;
-}
 function expClass(s){
   if(!s)return'';
   var p=s.replace(/\//g,'-').split('-');var d;
@@ -436,12 +386,12 @@ function expClass(s){
   return diff<0?'danger':diff<60?'warn':'ok';
 }
 
-// ── SEARCH ───────────────────────────────────
 function setField(f,idx){
   FIELD=f;
-  for(var i=0;i<5;i++){var el=document.getElementById('t'+i);if(el)el.classList.toggle('on',i===idx);}
+  for(var i=0;i<4;i++){var el=document.getElementById('t'+i);if(el)el.classList.toggle('on',i===idx);}
   doSearch();
 }
+
 function doSearch(){
   var q=document.getElementById('qInput').value.trim();
   var stEl=document.getElementById('stEl'),resEl=document.getElementById('resEl');
@@ -452,7 +402,7 @@ function doSearch(){
   var hits=[];
   for(var i=0;i<DATA.length;i++){
     var x=DATA[i];
-    var src=(FIELD==='name')?x.name:(FIELD==='id')?x.id:(FIELD==='plate')?(x.plate1+x.plate2+x.num1+x.num2):(FIELD==='contractor')?x.contractor:(x.name+x.id+x.contractor+x.plate1+x.plate2+x.num1+x.num2);
+    var src=(FIELD==='name')?x.name:(FIELD==='id')?x.id:(FIELD==='plate')?(x.plate1+x.plate2+x.num1+x.num2):(x.name+x.id+x.plate1+x.plate2+x.num1+x.num2);
     if(src.indexOf(q)>=0)hits.push(i);
   }
   stEl.textContent='نتائج: '+hits.length+' سجل';
@@ -467,12 +417,11 @@ function doSearch(){
     if(x.id)html+='<div class="card-id-small">'+esc(x.id)+'</div>';
     html+='</div><div class="card-no"># '+esc(x.no)+'</div></div>';
     html+='<div class="field-grid">';
-    html+=fld('المقاول',x.contractor,'');
     html+=fld('القاطرة',x.plate1||x.num1,'');
     html+=fld('انتهاء القاطرة',x.exp1,e1);
     html+=fld('المقطورة',x.plate2||x.num2,'');
     html+=fld('انتهاء المقطورة',x.exp2,e2);
-    html+=fld('أول الإشارة',x.start,'');
+    html+=fld('أول الإشارة',x.start,'','start-field');
     html+=fld('نهاية الإشارة',x.end, ps==='danger'?'danger':ps==='warn'?'warn':'');
     html+=fld('باقى على الانتهاء',x.remaining, ps==='danger'?'danger':ps==='warn'?'warn':'');
     html+='</div>';
@@ -482,29 +431,30 @@ function doSearch(){
     if(ps==='danger')b+='<span class="badge br">⚠ الإشارة منتهية</span>';
     else if(ps==='warn')b+='<span class="badge ba">⏰ الإشارة قريبة الانتهاء</span>';
     if(b)html+='<div class="badge-row">'+b+'</div>';
+    // زراير تحميل الإشارات
+    var permits='';
+    if(x.url1){var u1=drivePreview(x.url1);permits+='<a href="'+u1+'" target="_blank" class="permit-btn permit-btn-blue">📄 إشارة كلينكر</a>';}
+    if(x.url2){var u2=drivePreview(x.url2);permits+='<a href="'+u2+'" target="_blank" class="permit-btn permit-btn-green">📄 إشارة فحم</a>';}
+    if(permits)html+='<div class="permit-row">'+permits+'</div>';
     html+='</div>';
   }
   if(hits.length>50)html+='<div class="empty" style="padding:14px">يعرض أول 50 من '+hits.length+'</div>';
   resEl.innerHTML=html;
 }
-function fld(label,v,ec){
-  return'<div class="field"><div class="fl">'+label+'</div>'+(v?'<div class="fv '+(ec||'')+'">'+esc(v)+'</div>':'<div class="fv empty">—</div>')+'</div>';
+
+function fld(label,v,ec,fc){
+  return'<div class="field'+(fc?' '+fc:'')+'"><div class="fl">'+label+'</div>'+(v?'<div class="fv '+(ec||'')+'">'+esc(v)+'</div>':'<div class="fv empty">—</div>')+'</div>';
 }
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// Toast
 var tt=null;
 function showToast(msg){
   var t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   if(tt)clearTimeout(tt);
-  tt=setTimeout(function(){t.classList.remove('show');},3000);
+  tt=setTimeout(function(){t.classList.remove('show');},3500);
 }
 
-// Init
-notifEnabled=localStorage.getItem('notif')==='1';
-if(notifEnabled&&typeof Notification!=='undefined'&&Notification.permission!=='granted'){notifEnabled=false;}
-updateNotifBtn();
 document.getElementById('qInput').addEventListener('input',doSearch);
 setInterval(loadData,30*60*1000);
 loadData();
