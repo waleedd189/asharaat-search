@@ -106,14 +106,6 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
 .quran-title{font-size:16px;font-weight:900;color:#4ade80;display:block;line-height:1.3;font-family:'Cairo',inherit}
 .quran-sub{font-size:11px;color:#166534;display:block;margin-top:3px;font-weight:500}
 
-/* ── PERMIT BTNS ── */
-.permit-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #1a2535}
-.permit-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;font-family:'Cairo',inherit;transition:all 0.2s;flex:1;justify-content:center}
-.permit-btn-blue{background:#0f2744;border:1px solid #1e3a5f;color:#60a5fa}
-.permit-btn-blue:active{background:#1e3a5f}
-.permit-btn-green{background:#061a0d;border:1px solid #14532d;color:#4ade80}
-.permit-btn-green:active{background:#0d2414}
-
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
 .toast.show{transform:translateX(-50%) translateY(0)}
@@ -198,6 +190,7 @@ body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;d
     <div class="tab" id="t1" onclick="setField('name',1)">الاسم</div>
     <div class="tab" id="t2" onclick="setField('id',2)">رقم قومي</div>
     <div class="tab" id="t3" onclick="setField('plate',3)">اللوحة</div>
+    <div class="tab" id="t4" onclick="setField('contractor',4)">المقاول</div>
   </div>
   <div class="toprow">
     <div class="stats" id="stEl">جاري التحميل...</div>
@@ -292,6 +285,12 @@ if('serviceWorker' in navigator){
 }
 
 // ── DATA ─────────────────────────────────────
+function drivePreview(url){
+  if(!url) return '';
+  var m=url.match(/\/d\/([^/]+)/);
+  return m?'https://drive.google.com/file/d/'+m[1]+'/preview':url;
+}
+
 function loadData(){
   document.getElementById('loadArea').style.display='block';
   document.getElementById('loadArea').innerHTML='<div class="spinner"></div><br>جاري تحميل البيانات...';
@@ -322,11 +321,10 @@ function parseCSV(text){
       if(c.join(' ').indexOf('\u0627\u0644\u0627\u0633\u0645')>=0||c.join(' ').indexOf('\u0628\u0637\u0627\u0642\u0629')>=0){headerFound=true;}
       continue;
     }
-    while(c.length<16)c.push('');
+    while(c.length<18)c.push('');
     var name=tr(c[1]),id=tr(c[2]);
     if(!name&&!id)continue;
     var n1=tr(c[5]),t1=tr(c[4]),n2=tr(c[8]),t2=tr(c[7]);
-    while(c.length<18)c.push('');
     result.push({
       no:tr(c[0]),name:name,id:id,
       train1:t1,num1:n1,exp1:tr(c[6]),
@@ -388,7 +386,7 @@ function expClass(s){
 
 function setField(f,idx){
   FIELD=f;
-  for(var i=0;i<4;i++){var el=document.getElementById('t'+i);if(el)el.classList.toggle('on',i===idx);}
+  for(var i=0;i<5;i++){var el=document.getElementById('t'+i);if(el)el.classList.toggle('on',i===idx);}
   doSearch();
 }
 
@@ -402,7 +400,7 @@ function doSearch(){
   var hits=[];
   for(var i=0;i<DATA.length;i++){
     var x=DATA[i];
-    var src=(FIELD==='name')?x.name:(FIELD==='id')?x.id:(FIELD==='plate')?(x.plate1+x.plate2+x.num1+x.num2):(x.name+x.id+x.plate1+x.plate2+x.num1+x.num2);
+    var src=(FIELD==='name')?x.name:(FIELD==='id')?x.id:(FIELD==='plate')?(x.plate1+x.plate2+x.num1+x.num2):(FIELD==='contractor')?x.contractor:(x.name+x.id+x.contractor+x.plate1+x.plate2+x.num1+x.num2);
     if(src.indexOf(q)>=0)hits.push(i);
   }
   stEl.textContent='نتائج: '+hits.length+' سجل';
@@ -417,6 +415,7 @@ function doSearch(){
     if(x.id)html+='<div class="card-id-small">'+esc(x.id)+'</div>';
     html+='</div><div class="card-no"># '+esc(x.no)+'</div></div>';
     html+='<div class="field-grid">';
+    html+=fld('المقاول',x.contractor,'');
     html+=fld('القاطرة',x.plate1||x.num1,'');
     html+=fld('انتهاء القاطرة',x.exp1,e1);
     html+=fld('المقطورة',x.plate2||x.num2,'');
@@ -431,11 +430,10 @@ function doSearch(){
     if(ps==='danger')b+='<span class="badge br">⚠ الإشارة منتهية</span>';
     else if(ps==='warn')b+='<span class="badge ba">⏰ الإشارة قريبة الانتهاء</span>';
     if(b)html+='<div class="badge-row">'+b+'</div>';
-    // زراير تحميل الإشارات
     var permits='';
-    if(x.url1){var u1=drivePreview(x.url1);permits+='<a href="'+u1+'" target="_blank" class="permit-btn permit-btn-blue">📄 إشارة كلينكر</a>';}
-    if(x.url2){var u2=drivePreview(x.url2);permits+='<a href="'+u2+'" target="_blank" class="permit-btn permit-btn-green">📄 إشارة فحم</a>';}
-    if(permits)html+='<div class="permit-row">'+permits+'</div>';
+    if(x.url1) permits+='<a href="'+drivePreview(x.url1)+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#0f2744;border:1px solid #1e3a5f;color:#60a5fa;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none">📄 إشارة كلينكر</a> ';
+    if(x.url2) permits+='<a href="'+drivePreview(x.url2)+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#061a0d;border:1px solid #14532d;color:#4ade80;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none">📄 إشارة فحم</a>';
+    if(permits) html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #1a2535">'+permits+'</div>';
     html+='</div>';
   }
   if(hits.length>50)html+='<div class="empty" style="padding:14px">يعرض أول 50 من '+hits.length+'</div>';
