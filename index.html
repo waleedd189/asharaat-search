@@ -286,9 +286,13 @@ if('serviceWorker' in navigator){
 
 // ── DATA ─────────────────────────────────────
 function drivePreview(url){
-  if(!url) return '';
-  var m=url.match(/file\/d\/([a-zA-Z0-9_-]+)/);
-  if(m) return 'https://drive.google.com/file/d/'+m[1]+'/preview';
+  if(!url) return url;
+  try{
+    var parts=url.split('/d/');
+    if(parts.length<2) return url;
+    var fileId=parts[1].split('/')[0].split('?')[0];
+    if(fileId) return 'https://drive.google.com/file/d/'+fileId+'/preview';
+  }catch(e){}
   return url;
 }
 
