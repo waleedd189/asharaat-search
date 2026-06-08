@@ -2,630 +2,272 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#0a0e1a">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>لوحة الأدمن — الاشارات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Cairo',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;direction:rtl;min-height:100vh}
+:root{--bg:#0a0e1a;--surf:#0f1829;--surf2:#111e2e;--brd:#1e2d4a;--blue:#2563eb;--blue2:#1d4ed8;--green:#10b981;--red:#ef4444;--txt:#e2e8f0;--muted:#475569}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
 
-/* ── LOGIN SCREEN ── */
-#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.login-card{background:#0f1829;border:1px solid #1e2d4a;border-radius:24px;padding:36px 32px;width:100%;max-width:400px}
-.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
-.login-title{font-size:22px;font-weight:900;color:#e2e8f0}
-.login-title span{color:#3b82f6}
-.login-sub{font-size:12px;color:#475569;margin-top:3px;font-weight:500}
-.login-form-title{font-size:14px;color:#64748b;font-weight:700;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #1a2535}
-.form-group{margin-bottom:16px}
-.form-label{font-size:13px;color:#94a3b8;font-weight:700;margin-bottom:7px;display:block}
-.form-input{width:100%;padding:12px 14px;font-size:15px;font-family:'Cairo',inherit;font-weight:600;border:1.5px solid #1e2d4a;border-radius:12px;background:#080c14;color:#ffffff;outline:none;direction:rtl;transition:border-color 0.2s}
-.form-input:focus{border-color:#3b82f6;background:#0d1422}
-.form-input::placeholder{color:#334155;font-weight:400}
-.login-btn{width:100%;padding:13px;background:#2563eb;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;margin-top:8px;transition:all 0.2s}
-.login-btn:hover{background:#1d4ed8}
-.login-btn:active{transform:scale(0.98)}
-.login-err{background:#160a0a;border:1px solid #7f1d1d;border-radius:10px;padding:10px 14px;color:#f87171;font-size:13px;font-weight:600;margin-top:10px;display:none}
-.role-badge-login{font-size:11px;padding:3px 10px;border-radius:7px;font-weight:700;margin-right:6px}
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100}
+#loginScreen.hide{display:none}
+.lbox{width:100%;max-width:360px;background:var(--surf);border:1px solid var(--brd);border-radius:24px;padding:36px 28px;text-align:center}
+.lico{font-size:48px;margin-bottom:14px}
+.ltitle{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+.lsub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.linp{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid var(--brd);border-radius:12px;padding:13px 16px;color:var(--txt);font-family:'Cairo',sans-serif;font-size:15px;outline:none;text-align:center;letter-spacing:3px;margin-bottom:12px;transition:border-color .2s}
+.linp:focus{border-color:var(--blue)}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue2));border:none;border-radius:12px;padding:14px;color:#fff;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+.lerr{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:10px;color:#fca5a5;font-size:13px;margin-top:10px;display:none}
 
-/* ── ADMIN LAYOUT ── */
-#adminScreen{display:none;min-height:100vh}
-.admin-wrap{padding:14px;max-width:900px;margin:0 auto;padding-bottom:100px}
+/* APP */
+#adminApp{display:none;min-height:100vh}
+.topbar{background:rgba(10,14,26,0.97);border-bottom:1px solid var(--brd);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-ico{width:38px;height:38px;background:linear-gradient(135deg,var(--blue),var(--blue2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-name{font-size:15px;font-weight:900;color:#fff}
+.brand-sub{font-size:11px;color:#3b82f6}
+.btn-logout{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;border-radius:8px;padding:7px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
 
-/* ── TOP BAR ── */
-.topbar{background:#0f1829;border:1px solid #1e2d4a;border-radius:20px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.topbar-left{display:flex;align-items:center;gap:12px}
-.topbar-title{font-size:17px;font-weight:900;color:#e2e8f0}
-.topbar-title span{color:#3b82f6}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.user-pill{background:#1a2535;border:1px solid #2d3f5a;border-radius:10px;padding:7px 13px;font-size:13px;font-weight:700;color:#94a3b8;display:flex;align-items:center;gap:7px}
-.role-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.logout-btn{background:transparent;border:1px solid #2d3f5a;border-radius:10px;padding:7px 14px;color:#64748b;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;transition:all 0.2s}
-.logout-btn:hover{border-color:#f87171;color:#f87171}
+.main{padding:20px;max-width:640px;margin:0 auto}
 
-/* ── TABS ── */
-.nav-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
-.nav-tabs::-webkit-scrollbar{display:none}
-.ntab{padding:9px 20px;border-radius:20px;font-size:13px;font-weight:700;font-family:'Cairo',inherit;cursor:pointer;border:1px solid #1e2d4a;color:#64748b;background:#0f1829;white-space:nowrap;flex-shrink:0;transition:all 0.15s}
-.ntab.on{background:#2563eb;color:#ffffff;border-color:#2563eb}
+/* STATS */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.stat{background:var(--surf);border:1px solid var(--brd);border-radius:16px;padding:16px;text-align:center}
+.stat-val{font-size:32px;font-weight:900;color:#3b82f6}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:4px}
 
-/* ── STATS ── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
-.stat-card{background:#0f1829;border:1px solid #1e2d4a;border-radius:16px;padding:16px}
-.stat-label{font-size:12px;color:#475569;font-weight:700;margin-bottom:6px}
-.stat-val{font-size:28px;font-weight:900;color:#ffffff;line-height:1}
-.stat-sub{font-size:11px;color:#334155;margin-top:5px;font-weight:500}
-.stat-val.danger{color:#f87171}
-.stat-val.warn{color:#fbbf24}
-.stat-val.ok{color:#34d399}
+/* SECTION */
+.sec{background:var(--surf);border:1px solid var(--brd);border-radius:20px;padding:20px;margin-bottom:16px}
+.sec-title{font-size:15px;font-weight:900;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 
-/* chart bars */
-.mini-bars{display:flex;align-items:flex-end;gap:3px;height:40px;margin-top:8px}
-.bar{flex:1;background:#1a2535;border-radius:3px 3px 0 0;transition:height 0.4s}
-.bar.danger{background:#991b1b}
-.bar.warn{background:#92400e}
-.bar.ok{background:#065f46}
+/* ADD */
+.add-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.inp{flex:1;min-width:140px;background:rgba(255,255,255,0.05);border:1.5px solid var(--brd);border-radius:10px;padding:10px 14px;color:var(--txt);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.inp:focus{border-color:var(--blue)}
+.btn-add{background:linear-gradient(135deg,var(--green),#059669);border:none;border-radius:10px;padding:10px 18px;color:#fff;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.btn-add:disabled{opacity:0.6;cursor:not-allowed}
 
-/* ── TABLE ── */
-.section-hd{font-size:15px;font-weight:900;color:#e2e8f0;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.add-btn{padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;transition:all 0.15s}
-.add-btn:hover{background:#1d4ed8}
-.add-btn:disabled{background:#1a2535;color:#334155;cursor:not-allowed}
+/* LIST */
+.user-item{background:rgba(255,255,255,0.03);border:1px solid var(--brd);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;transition:.15s}
+.user-item:hover{background:rgba(255,255,255,0.05)}
+.user-info{display:flex;flex-direction:column;gap:3px}
+.user-name{font-size:14px;font-weight:700;color:#fff}
+.user-email{font-size:12px;color:#3b82f6;direction:ltr;text-align:right}
+.btn-del{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;border-radius:8px;padding:6px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
+.btn-del:hover{background:rgba(239,68,68,0.2)}
+.empty-list{text-align:center;padding:30px;color:var(--muted);font-size:13px}
 
-.users-table{width:100%;border-collapse:collapse;font-size:13px}
-.users-table th{padding:10px 12px;text-align:right;color:#475569;font-weight:700;font-size:11px;border-bottom:1px solid #1a2535;background:#080c14}
-.users-table td{padding:11px 12px;border-bottom:1px solid #111827;vertical-align:middle}
-.users-table tr:last-child td{border-bottom:none}
-.users-table tr:hover td{background:#0f1829}
-.table-wrap{background:#0f1829;border:1px solid #1e2d4a;border-radius:16px;overflow:hidden}
-
-.role-pill{font-size:11px;padding:4px 11px;border-radius:8px;font-weight:700;white-space:nowrap}
-.role-super{background:#1e1050;color:#a78bfa;border:1px solid #312e81}
-.role-admin{background:#0f2744;color:#60a5fa;border:1px solid #1e3a5f}
-.role-viewer{background:#052e16;color:#4ade80;border:1px solid #14532d}
-.status-on{color:#34d399;font-weight:700;font-size:12px}
-.status-off{color:#475569;font-weight:700;font-size:12px}
-
-.action-btn{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;border:1px solid;transition:all 0.15s;margin-right:4px}
-.btn-edit{background:#0f2744;color:#60a5fa;border-color:#1e3a5f}
-.btn-edit:hover{background:#1e3a5f}
-.btn-del{background:#160a0a;color:#f87171;border-color:#450a0a}
-.btn-del:hover{background:#450a0a}
-.btn-toggle{background:#1a2535;color:#94a3b8;border-color:#2d3f5a}
-.btn-toggle:hover{background:#2d3f5a}
-
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.show{display:flex}
-.modal{background:#0f1829;border:1px solid #1e2d4a;border-radius:20px;padding:28px 26px;width:100%;max-width:420px}
-.modal-title{font-size:16px;font-weight:900;color:#e2e8f0;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #1a2535}
-.modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
-.modal-cancel{padding:10px 20px;background:transparent;border:1px solid #2d3f5a;color:#94a3b8;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit}
-.modal-save{padding:10px 22px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',inherit;transition:all 0.15s}
-.modal-save:hover{background:#1d4ed8}
-.modal-err{font-size:12px;color:#f87171;margin-top:8px;display:none;font-weight:600}
-
-/* select */
-.form-select{width:100%;padding:11px 14px;font-size:14px;font-family:'Cairo',inherit;font-weight:600;border:1.5px solid #1e2d4a;border-radius:12px;background:#080c14;color:#ffffff;outline:none;direction:rtl;transition:border-color 0.2s;appearance:none;cursor:pointer}
-.form-select:focus{border-color:#3b82f6}
-
-/* ── LOG ── */
-.log-item{padding:10px 14px;border-bottom:1px solid #111827;font-size:13px;display:flex;align-items:flex-start;gap:10px}
-.log-item:last-child{border:none}
-.log-time{font-size:11px;color:#334155;white-space:nowrap;margin-top:2px;font-weight:600;direction:ltr;min-width:80px}
-.log-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.log-text{color:#94a3b8;font-weight:600;flex:1;line-height:1.5}
-.log-text b{color:#e2e8f0}
-
-/* ── PERMIT STATS ── */
-.permit-chart{background:#0f1829;border:1px solid #1e2d4a;border-radius:16px;padding:16px;margin-bottom:10px}
-.pc-title{font-size:13px;color:#64748b;font-weight:700;margin-bottom:12px}
-.pc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.pc-label{font-size:12px;color:#94a3b8;font-weight:600;min-width:100px}
-.pc-bar-wrap{flex:1;background:#1a2535;border-radius:4px;height:8px;overflow:hidden}
-.pc-bar-fill{height:100%;border-radius:4px;transition:width 0.6s ease}
-.pc-count{font-size:12px;font-weight:700;min-width:30px;text-align:left}
-
-/* ── EMPTY/HINT ── */
-.hint{font-size:12px;color:#334155;font-weight:500;margin-top:8px;padding:10px;background:#080c14;border-radius:8px;line-height:1.8}
-.hint b{color:#475569}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e3a5f;border:1px solid #2563eb;color:#93c5fd;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',inherit}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:12px;padding:11px 22px;font-size:13px;font-weight:700;z-index:999;transition:transform .3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',sans-serif}
 .toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#052e16;border:1px solid #16a34a;color:#4ade80}
+.toast.err{background:#200a0a;border:1px solid #7f1d1d;color:#fca5a5}
 
-/* ── NO PERM ── */
-.no-perm{text-align:center;padding:40px;color:#334155;font-size:14px;font-weight:700}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:30px;color:var(--muted)}
 </style>
 </head>
 <body>
 
-<!-- ════ LOGIN ════ -->
+<!-- LOGIN -->
 <div id="loginScreen">
-  <div class="login-card">
-    <div class="login-logo">
-      <svg width="46" height="46" viewBox="0 0 52 52" fill="none">
-        <rect width="52" height="52" rx="14" fill="#0f2744"/>
-        <rect x="6" y="20" width="28" height="16" rx="3" fill="#2563eb"/>
-        <rect x="30" y="23" width="14" height="13" rx="3" fill="#3b82f6"/>
-        <rect x="32" y="25" width="9" height="6" rx="1.5" fill="#bfdbfe" opacity="0.9"/>
-        <circle cx="12" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-        <circle cx="12" cy="37" r="1.5" fill="#60a5fa"/>
-        <circle cx="24" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-        <circle cx="24" cy="37" r="1.5" fill="#60a5fa"/>
-        <circle cx="39" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-        <circle cx="39" cy="37" r="1.5" fill="#60a5fa"/>
-        <rect x="9" y="23" width="12" height="8" rx="1.5" fill="#1e3a5f" stroke="#3b82f6" stroke-width="0.8"/>
-        <rect x="10.5" y="24.5" width="9" height="1.5" rx="0.5" fill="#93c5fd" opacity="0.7"/>
-        <rect x="10.5" y="27" width="6" height="1.5" rx="0.5" fill="#93c5fd" opacity="0.4"/>
-      </svg>
-      <div>
-        <div class="login-title">لوحة <span>الأدمن</span></div>
-        <div class="login-sub">إدارة تصاريح النقل الثقيل</div>
-      </div>
-    </div>
-    <div class="login-form-title">🔐 تسجيل الدخول</div>
-    <div class="form-group">
-      <label class="form-label">اسم المستخدم</label>
-      <input class="form-input" type="text" id="loginUser" placeholder="ادخل اسم المستخدم" autocomplete="username"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">كلمة المرور</label>
-      <input class="form-input" type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"/>
-    </div>
-    <button class="login-btn" onclick="doLogin()">دخول ◄</button>
-    <div class="login-err" id="loginErr">❌ اسم المستخدم أو كلمة المرور غلط</div>
-    <div class="hint" style="margin-top:16px">
-      <b>حسابات تجريبية:</b><br>
-      super / super123 → صلاحيات كاملة<br>
-      admin / admin123 → إدارة يوزرات<br>
-      viewer / view123 → عرض فقط
-    </div>
+  <div class="lbox">
+    <div class="lico">🔐</div>
+    <div class="ltitle">لوحة الأدمن</div>
+    <div class="lsub">نظام إدارة الاشارات</div>
+    <input class="linp" type="password" id="pw" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="lbtn" onclick="checkPw()">دخول ←</button>
+    <div class="lerr" id="pwErr">❌ كلمة المرور غلط</div>
   </div>
 </div>
 
-<!-- ════ ADMIN ════ -->
-<div id="adminScreen">
-<div class="admin-wrap">
-
-  <!-- topbar -->
+<!-- ADMIN APP -->
+<div id="adminApp">
   <div class="topbar">
-    <div class="topbar-left">
-      <svg width="36" height="36" viewBox="0 0 52 52" fill="none">
-        <rect width="52" height="52" rx="14" fill="#0f2744"/>
-        <rect x="6" y="20" width="28" height="16" rx="3" fill="#2563eb"/>
-        <rect x="30" y="23" width="14" height="13" rx="3" fill="#3b82f6"/>
-        <rect x="32" y="25" width="9" height="6" rx="1.5" fill="#bfdbfe" opacity="0.9"/>
-        <circle cx="12" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-        <circle cx="12" cy="37" r="1.5" fill="#60a5fa"/>
-        <circle cx="24" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-        <circle cx="24" cy="37" r="1.5" fill="#60a5fa"/>
-        <circle cx="39" cy="37" r="4" fill="#1e2d4a" stroke="#60a5fa" stroke-width="1.5"/>
-        <circle cx="39" cy="37" r="1.5" fill="#60a5fa"/>
-      </svg>
-      <div class="topbar-title">لوحة <span>الأدمن</span></div>
-    </div>
-    <div class="topbar-right">
-      <div class="user-pill">
-        <span class="role-dot" id="myRoleDot"></span>
-        <span id="myUserName"></span>
-        <span id="myRolePill"></span>
+    <div class="brand">
+      <div class="brand-ico">🚦</div>
+      <div>
+        <div class="brand-name">لوحة الأدمن</div>
+        <div class="brand-sub">إدارة الاشارات</div>
       </div>
-      <button class="logout-btn" onclick="doLogout()">خروج</button>
     </div>
+    <button class="btn-logout" onclick="doLogout()">خروج</button>
   </div>
 
-  <!-- nav -->
-  <div class="nav-tabs">
-    <div class="ntab on" id="nt0" onclick="showTab(0)">📊 الإحصائيات</div>
-    <div class="ntab" id="nt1" onclick="showTab(1)">👥 المستخدمون</div>
-    <div class="ntab" id="nt2" onclick="showTab(2)">📋 سجل النشاط</div>
-  </div>
+  <div class="main">
 
-  <!-- TAB 0: STATS -->
-  <div id="tab0">
-    <div class="stats-grid" id="statsGrid"></div>
-    <div class="permit-chart" id="permitChart"></div>
-    <div id="statusBreakdown"></div>
-  </div>
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val" id="statCount">—</div>
+        <div class="stat-lbl">إجمالي المقاولين</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="statNew">—</div>
+        <div class="stat-lbl">مضاف اليوم</div>
+      </div>
+    </div>
 
-  <!-- TAB 1: USERS -->
-  <div id="tab1" style="display:none">
-    <div class="section-hd">
-      <span>👥 إدارة المستخدمين</span>
-      <button class="add-btn" id="addUserBtn" onclick="openAddModal()">+ إضافة مستخدم</button>
+    <!-- ADD USER -->
+    <div class="sec">
+      <div class="sec-title">➕ إضافة مقاول جديد</div>
+      <div class="add-row">
+        <input type="text" class="inp" id="newName" placeholder="الاسم">
+        <input type="email" class="inp" id="newEmail" placeholder="example@gmail.com"
+          onkeydown="if(event.key==='Enter')addUser()">
+      </div>
+      <button class="btn-add" id="addBtn" onclick="addUser()">
+        ✅ إضافة
+      </button>
     </div>
-    <div class="table-wrap">
-      <table class="users-table" id="usersTable">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>اسم المستخدم</th>
-            <th>الاسم الكامل</th>
-            <th>الصلاحية</th>
-            <th>الحالة</th>
-            <th>آخر دخول</th>
-            <th>إجراءات</th>
-          </tr>
-        </thead>
-        <tbody id="usersBody"></tbody>
-      </table>
-    </div>
-    <div class="hint" style="margin-top:12px">
-      <b>مستويات الصلاحيات:</b><br>
-      🟣 <b>Super Admin</b> — كل الصلاحيات بما فيها حذف Admins<br>
-      🔵 <b>Admin</b> — إضافة/تعديل/حذف Viewers فقط، عرض الإحصائيات<br>
-      🟢 <b>Viewer</b> — عرض البيانات فقط بدون تعديل
-    </div>
-  </div>
 
-  <!-- TAB 2: LOG -->
-  <div id="tab2" style="display:none">
-    <div class="section-hd">
-      <span>📋 سجل النشاط</span>
-      <button class="add-btn" style="background:#1a2535;color:#64748b;border:1px solid #2d3f5a" onclick="clearLog()">مسح السجل</button>
+    <!-- USERS LIST -->
+    <div class="sec">
+      <div class="sec-title">👥 المقاولين المصرح ليهم</div>
+      <div id="usersList"><div class="loading"><div class="spin"></div></div></div>
     </div>
-    <div class="table-wrap" id="logWrap"></div>
-  </div>
 
-</div>
-</div>
-
-<!-- ════ MODAL: ADD/EDIT USER ════ -->
-<div class="modal-overlay" id="userModal">
-  <div class="modal">
-    <div class="modal-title" id="modalTitle">➕ إضافة مستخدم جديد</div>
-    <div class="form-group">
-      <label class="form-label">اسم المستخدم (username)</label>
-      <input class="form-input" type="text" id="mUser" placeholder="مثال: ahmed123" autocomplete="off"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">الاسم الكامل</label>
-      <input class="form-input" type="text" id="mName" placeholder="مثال: أحمد محمد"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">كلمة المرور</label>
-      <input class="form-input" type="password" id="mPass" placeholder="••••••••" autocomplete="new-password"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">الصلاحية</label>
-      <select class="form-select" id="mRole">
-        <option value="viewer">🟢 Viewer — عرض فقط</option>
-        <option value="admin">🔵 Admin — إدارة</option>
-        <option value="super">🟣 Super Admin — كامل</option>
-      </select>
-    </div>
-    <div class="modal-err" id="modalErr"></div>
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal()">إلغاء</button>
-      <button class="modal-save" onclick="saveUser()">حفظ ✓</button>
-    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-// ════════════════════════════════════════════
-// USERS STORE — محفوظ في localStorage
-// ════════════════════════════════════════════
-var ROLES = {
-  super:  { label:'Super Admin', cls:'role-super', dot:'#a78bfa' },
-  admin:  { label:'Admin',       cls:'role-admin',  dot:'#60a5fa' },
-  viewer: { label:'Viewer',      cls:'role-viewer', dot:'#4ade80' }
+<script type="module">
+import { initializeApp }              from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const ADMIN_PASS = 'admin2026';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCmLfaEb7lPCWaqiQLNRsqWUjuTya4xWF0",
+  authDomain: "asharaat-search.firebaseapp.com",
+  projectId: "asharaat-search",
+  storageBucket: "asharaat-search.firebasestorage.app",
+  messagingSenderId: "930583092172",
+  appId: "1:930583092172:web:89aaf88198c3b1d1195b69"
 };
 
-function loadUsers(){
-  var saved = localStorage.getItem('admin_users');
-  if(saved){ try{ return JSON.parse(saved); } catch(e){} }
-  // defaults
-  return [
-    { id:1, username:'super',  fullname:'المدير الرئيسي',  password:'super123',  role:'super',  active:true,  lastLogin:'' },
-    { id:2, username:'admin',  fullname:'أحمد الأدمن',     password:'admin123',  role:'admin',  active:true,  lastLogin:'' },
-    { id:3, username:'viewer', fullname:'محمد المراقب',    password:'view123',   role:'viewer', active:true,  lastLogin:'' }
-  ];
-}
-function saveUsers(u){ localStorage.setItem('admin_users', JSON.stringify(u)); }
-function loadLog(){ try{ return JSON.parse(localStorage.getItem('admin_log')||'[]'); } catch(e){ return []; } }
-function saveLog(l){ localStorage.setItem('admin_log', JSON.stringify(l.slice(0,200))); }
-function addLog(icon, text){
-  var l = loadLog();
-  l.unshift({ time: new Date().toLocaleTimeString('ar-EG'), icon:icon, text:text });
-  saveLog(l);
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── LOGIN ──────────────────────────────────────────
+window.checkPw = function(){
+  var pw = document.getElementById('pw').value;
+  if(pw === ADMIN_PASS){
+    document.getElementById('loginScreen').classList.add('hide');
+    document.getElementById('adminApp').style.display = 'block';
+    loadUsers();
+  } else {
+    document.getElementById('pwErr').style.display = 'block';
+  }
+};
+
+window.doLogout = function(){
+  document.getElementById('loginScreen').classList.remove('hide');
+  document.getElementById('adminApp').style.display = 'none';
+  document.getElementById('pw').value = '';
+};
+
+// ── LOAD USERS ─────────────────────────────────────
+var allUsers = [];
+
+async function loadUsers(){
+  document.getElementById('usersList').innerHTML = '<div class="loading"><div class="spin"></div></div>';
+  try {
+    var snap = await getDocs(collection(db,'contractors'));
+    allUsers = snap.docs.map(function(d){ return {id:d.id, ...d.data()}; });
+    renderUsers();
+    updateStats();
+  } catch(e){
+    document.getElementById('usersList').innerHTML = '<div class="empty-list">❌ خطأ: '+e.message+'</div>';
+  }
 }
 
-var USERS = loadUsers();
-var currentUser = null;
-var editingId = null;
-
-// ════════════════════════════════════════════
-// AUTH
-// ════════════════════════════════════════════
-function doLogin(){
-  var u = document.getElementById('loginUser').value.trim();
-  var p = document.getElementById('loginPass').value;
-  USERS = loadUsers();
-  var found = USERS.find(function(x){ return x.username===u && x.password===p && x.active; });
-  if(!found){
-    document.getElementById('loginErr').style.display='block';
+function renderUsers(){
+  var el = document.getElementById('usersList');
+  if(!allUsers.length){
+    el.innerHTML = '<div class="empty-list">مفيش مقاولين مضافين لحد دلوقتي</div>';
     return;
   }
-  found.lastLogin = new Date().toLocaleString('ar-EG');
-  saveUsers(USERS);
-  addLog('🔑','دخل المستخدم <b>'+found.fullname+'</b> ('+found.username+')');
-  currentUser = found;
-  document.getElementById('loginErr').style.display='none';
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('adminScreen').style.display='block';
-  renderTopbar();
-  renderStats();
-  renderUsers();
-  renderLog();
-}
-
-function doLogout(){
-  addLog('👋','خرج المستخدم <b>'+currentUser.fullname+'</b>');
-  currentUser=null;
-  document.getElementById('adminScreen').style.display='none';
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('loginUser').value='';
-  document.getElementById('loginPass').value='';
-}
-
-// Enter key
-document.addEventListener('keydown', function(e){
-  if(e.key==='Enter' && document.getElementById('loginScreen').style.display!=='none') doLogin();
-});
-
-// ════════════════════════════════════════════
-// TOPBAR
-// ════════════════════════════════════════════
-function renderTopbar(){
-  var r = ROLES[currentUser.role];
-  document.getElementById('myUserName').textContent = currentUser.fullname + ' — ';
-  document.getElementById('myRoleDot').style.background = r.dot;
-  document.getElementById('myRolePill').textContent = r.label;
-}
-
-// ════════════════════════════════════════════
-// TABS
-// ════════════════════════════════════════════
-function showTab(idx){
-  for(var i=0;i<3;i++){
-    document.getElementById('tab'+i).style.display = i===idx?'block':'none';
-    document.getElementById('nt'+i).classList.toggle('on', i===idx);
-  }
-  if(idx===0) renderStats();
-  if(idx===1) renderUsers();
-  if(idx===2) renderLog();
-}
-
-// ════════════════════════════════════════════
-// STATS TAB
-// ════════════════════════════════════════════
-function renderStats(){
-  USERS = loadUsers();
-  var total=USERS.length, active=USERS.filter(function(u){return u.active;}).length;
-  var supers=USERS.filter(function(u){return u.role==='super';}).length;
-  var admins=USERS.filter(function(u){return u.role==='admin';}).length;
-  var viewers=USERS.filter(function(u){return u.role==='viewer';}).length;
-  var logs=loadLog();
-
-  document.getElementById('statsGrid').innerHTML =
-    statCard('إجمالي المستخدمين', total, 'سجل', '') +
-    statCard('نشطون الآن', active, 'من '+total, active===total?'ok':active>0?'warn':'danger') +
-    statCard('Super Admins', supers, 'مدراء رئيسيون', supers>0?'ok':'') +
-    statCard('سجلات النشاط', logs.length, 'إجراء مسجل', '');
-
-  // role breakdown chart
-  var pc = document.getElementById('permitChart');
-  pc.innerHTML = '<div class="pc-title">توزيع الصلاحيات</div>' +
-    pcRow('Super Admin', supers, total, '#a78bfa') +
-    pcRow('Admin',       admins, total, '#60a5fa') +
-    pcRow('Viewer',      viewers, total, '#4ade80');
-
-  // last logins
-  var sb = document.getElementById('statusBreakdown');
-  var recentLogins = USERS.filter(function(u){return u.lastLogin;});
-  if(recentLogins.length){
-    var rows = recentLogins.map(function(u){
-      return '<tr><td style="padding:10px 12px;color:#e2e8f0;font-weight:600">'+esc(u.fullname)+'</td>'+
-        '<td style="padding:10px 12px"><span class="role-pill '+ROLES[u.role].cls+'">'+ROLES[u.role].label+'</span></td>'+
-        '<td style="padding:10px 12px;color:#64748b;font-size:12px">'+esc(u.lastLogin)+'</td></tr>';
-    }).join('');
-    sb.innerHTML='<div class="section-hd" style="margin-top:14px;margin-bottom:8px"><span>🕐 آخر تسجيلات دخول</span></div>'+
-      '<div class="table-wrap"><table class="users-table"><thead><tr><th>المستخدم</th><th>الصلاحية</th><th>وقت الدخول</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
-  } else {
-    sb.innerHTML='';
-  }
-}
-
-function statCard(label, val, sub, cls){
-  return '<div class="stat-card"><div class="stat-label">'+label+'</div>'+
-    '<div class="stat-val '+(cls||'")>'+val+'</div>'+
-    '<div class="stat-sub">'+sub+'</div></div>';
-}
-function pcRow(label, count, total, color){
-  var pct = total>0 ? Math.round(count/total*100) : 0;
-  return '<div class="pc-row">'+
-    '<div class="pc-label">'+label+'</div>'+
-    '<div class="pc-bar-wrap"><div class="pc-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'+
-    '<div class="pc-count" style="color:'+color+'">'+count+'</div></div>';
-}
-
-// ════════════════════════════════════════════
-// USERS TAB
-// ════════════════════════════════════════════
-function renderUsers(){
-  USERS = loadUsers();
-  var canEdit = currentUser.role==='super' || currentUser.role==='admin';
-  document.getElementById('addUserBtn').disabled = !canEdit;
-
-  var body='';
-  USERS.forEach(function(u, idx){
-    var canDel = canDelete(u);
-    var canEd  = canEditUser(u);
-    body += '<tr>'+
-      '<td style="color:#334155;font-weight:700">'+(idx+1)+'</td>'+
-      '<td style="font-weight:700;color:#e2e8f0;direction:ltr">'+esc(u.username)+'</td>'+
-      '<td style="color:#94a3b8">'+esc(u.fullname)+'</td>'+
-      '<td><span class="role-pill '+ROLES[u.role].cls+'">'+ROLES[u.role].label+'</span></td>'+
-      '<td>'+(u.active?'<span class="status-on">● نشط</span>':'<span class="status-off">○ معطل</span>')+'</td>'+
-      '<td style="color:#475569;font-size:11px">'+(u.lastLogin||'—')+'</td>'+
-      '<td>'+
-        (canEd?'<button class="action-btn btn-edit" onclick="openEditModal('+u.id+')">تعديل</button>':'') +
-        (canEdit?'<button class="action-btn btn-toggle" onclick="toggleUser('+u.id+')">'+(u.active?'تعطيل':'تفعيل')+'</button>':'') +
-        (canDel?'<button class="action-btn btn-del" onclick="deleteUser('+u.id+')">حذف</button>':'') +
-      '</td></tr>';
-  });
-  document.getElementById('usersBody').innerHTML = body || '<tr><td colspan="7" style="text-align:center;padding:20px;color:#334155">لا يوجد مستخدمون</td></tr>';
-}
-
-function canDelete(u){
-  if(u.username === currentUser.username) return false;
-  if(currentUser.role==='super') return true;
-  if(currentUser.role==='admin' && u.role==='viewer') return true;
-  return false;
-}
-function canEditUser(u){
-  if(currentUser.role==='super') return true;
-  if(currentUser.role==='admin' && u.role==='viewer') return true;
-  if(u.username===currentUser.username) return true;
-  return false;
-}
-
-function toggleUser(id){
-  USERS = loadUsers();
-  var u = USERS.find(function(x){return x.id===id;});
-  if(!u) return;
-  if(!canDelete(u) && u.username!==currentUser.username){ showToast('ليس لديك صلاحية'); return; }
-  u.active = !u.active;
-  saveUsers(USERS);
-  addLog(u.active?'✅':'🚫', (u.active?'تفعيل':'تعطيل')+' المستخدم <b>'+u.fullname+'</b> من قِبل <b>'+currentUser.fullname+'</b>');
-  renderUsers();
-  showToast(u.active?'تم تفعيل المستخدم ✓':'تم تعطيل المستخدم');
-}
-
-function deleteUser(id){
-  USERS = loadUsers();
-  var u = USERS.find(function(x){return x.id===id;});
-  if(!u || !canDelete(u)){ showToast('ليس لديك صلاحية لحذف هذا المستخدم'); return; }
-  if(!confirm('هل أنت متأكد من حذف المستخدم: '+u.fullname+'؟')) return;
-  USERS = USERS.filter(function(x){return x.id!==id;});
-  saveUsers(USERS);
-  addLog('🗑️','حذف المستخدم <b>'+u.fullname+'</b> من قِبل <b>'+currentUser.fullname+'</b>');
-  renderUsers();
-  showToast('تم حذف المستخدم');
-}
-
-// ════════════════════════════════════════════
-// MODAL
-// ════════════════════════════════════════════
-function openAddModal(){
-  if(currentUser.role!=='super' && currentUser.role!=='admin'){ showToast('ليس لديك صلاحية'); return; }
-  editingId=null;
-  document.getElementById('modalTitle').textContent='➕ إضافة مستخدم جديد';
-  document.getElementById('mUser').value='';
-  document.getElementById('mName').value='';
-  document.getElementById('mPass').value='';
-  document.getElementById('mRole').value='viewer';
-  document.getElementById('mUser').disabled=false;
-  // admin can only add viewers
-  if(currentUser.role==='admin'){
-    document.getElementById('mRole').value='viewer';
-    document.getElementById('mRole').disabled=true;
-  } else {
-    document.getElementById('mRole').disabled=false;
-  }
-  document.getElementById('modalErr').style.display='none';
-  document.getElementById('userModal').classList.add('show');
-}
-
-function openEditModal(id){
-  USERS=loadUsers();
-  var u=USERS.find(function(x){return x.id===id;});
-  if(!u||!canEditUser(u)){ showToast('ليس لديك صلاحية'); return; }
-  editingId=id;
-  document.getElementById('modalTitle').textContent='✏️ تعديل بيانات: '+u.fullname;
-  document.getElementById('mUser').value=u.username;
-  document.getElementById('mUser').disabled=true;
-  document.getElementById('mName').value=u.fullname;
-  document.getElementById('mPass').value='';
-  document.getElementById('mRole').value=u.role;
-  document.getElementById('mRole').disabled = currentUser.role!=='super';
-  document.getElementById('modalErr').style.display='none';
-  document.getElementById('userModal').classList.add('show');
-}
-
-function closeModal(){ document.getElementById('userModal').classList.remove('show'); }
-
-function saveUser(){
-  USERS=loadUsers();
-  var username=document.getElementById('mUser').value.trim();
-  var fullname=document.getElementById('mName').value.trim();
-  var pass=document.getElementById('mPass').value;
-  var role=document.getElementById('mRole').value;
-  var errEl=document.getElementById('modalErr');
-  errEl.style.display='none';
-
-  if(!fullname){ errEl.textContent='ادخل الاسم الكامل'; errEl.style.display='block'; return; }
-  if(!editingId){
-    if(!username){ errEl.textContent='ادخل اسم المستخدم'; errEl.style.display='block'; return; }
-    if(!pass){ errEl.textContent='ادخل كلمة المرور'; errEl.style.display='block'; return; }
-    if(pass.length<6){ errEl.textContent='كلمة المرور على الأقل 6 أحرف'; errEl.style.display='block'; return; }
-    if(USERS.find(function(x){return x.username===username;})){ errEl.textContent='اسم المستخدم موجود بالفعل'; errEl.style.display='block'; return; }
-    var newId = USERS.length ? Math.max.apply(null,USERS.map(function(x){return x.id;}))+1 : 1;
-    USERS.push({ id:newId, username:username, fullname:fullname, password:pass, role:role, active:true, lastLogin:'' });
-    addLog('➕','إضافة مستخدم جديد <b>'+fullname+'</b> ('+ROLES[role].label+') من قِبل <b>'+currentUser.fullname+'</b>');
-    showToast('تم إضافة المستخدم ✓');
-  } else {
-    var u=USERS.find(function(x){return x.id===editingId;});
-    if(!u){ closeModal(); return; }
-    u.fullname=fullname;
-    if(pass){ if(pass.length<6){ errEl.textContent='كلمة المرور على الأقل 6 أحرف'; errEl.style.display='block'; return; } u.password=pass; }
-    if(currentUser.role==='super') u.role=role;
-    addLog('✏️','تعديل بيانات <b>'+u.fullname+'</b> من قِبل <b>'+currentUser.fullname+'</b>');
-    showToast('تم حفظ التعديلات ✓');
-    if(u.username===currentUser.username){ currentUser=u; renderTopbar(); }
-  }
-  saveUsers(USERS);
-  closeModal();
-  renderUsers();
-}
-
-// ════════════════════════════════════════════
-// LOG TAB
-// ════════════════════════════════════════════
-function renderLog(){
-  var logs=loadLog();
-  var lw=document.getElementById('logWrap');
-  if(!logs.length){ lw.innerHTML='<div class="no-perm">لا يوجد سجلات بعد</div>'; return; }
-  lw.innerHTML = logs.map(function(l){
-    return '<div class="log-item"><div class="log-icon">'+l.icon+'</div><div class="log-text">'+l.text+'</div><div class="log-time">'+l.time+'</div></div>';
+  el.innerHTML = allUsers.map(function(u){
+    return '<div class="user-item">'
+      + '<div class="user-info">'
+      + '<div class="user-name">'+(u.name||'—')+'</div>'
+      + '<div class="user-email">'+(u.email||'—')+'</div>'
+      + '</div>'
+      + '<button class="btn-del" onclick="delUser(\''+u.id+'\',\''+u.name+'\')">🗑 حذف</button>'
+      + '</div>';
   }).join('');
 }
-function clearLog(){
-  if(!confirm('هل تريد مسح كل السجلات؟')) return;
-  saveLog([]);
-  renderLog();
-  showToast('تم مسح السجل');
+
+function updateStats(){
+  document.getElementById('statCount').textContent = allUsers.length;
+  var today = new Date().toDateString();
+  var todayCount = allUsers.filter(function(u){
+    if(!u.createdAt) return false;
+    var d = u.createdAt.toDate ? u.createdAt.toDate() : new Date(u.createdAt);
+    return d.toDateString() === today;
+  }).length;
+  document.getElementById('statNew').textContent = todayCount;
 }
 
-// ════════════════════════════════════════════
-// HELPERS
-// ════════════════════════════════════════════
-function esc(s){ return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-var tt=null;
-function showToast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  if(tt)clearTimeout(tt);
-  tt=setTimeout(function(){t.classList.remove('show');},3000);
-}
+// ── ADD USER ───────────────────────────────────────
+window.addUser = async function(){
+  var name  = document.getElementById('newName').value.trim();
+  var email = document.getElementById('newEmail').value.trim().toLowerCase();
+  var btn   = document.getElementById('addBtn');
 
-// close modal on overlay click
-document.getElementById('userModal').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
+  if(!name){ toast('⚠️ أدخل الاسم','err'); return; }
+  if(!email || !email.includes('@')){ toast('⚠️ أدخل إيميل صحيح','err'); return; }
+  if(allUsers.find(function(u){ return u.email===email; })){ toast('⚠️ الإيميل موجود بالفعل','err'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> جاري الإضافة...';
+
+  try {
+    await addDoc(collection(db,'contractors'),{
+      name: name,
+      email: email,
+      createdAt: serverTimestamp()
+    });
+    document.getElementById('newName').value  = '';
+    document.getElementById('newEmail').value = '';
+    toast('✅ تم إضافة '+name,'ok');
+    await loadUsers();
+  } catch(e){
+    toast('❌ خطأ: '+e.message,'err');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '✅ إضافة';
+};
+
+// ── DELETE USER ────────────────────────────────────
+window.delUser = async function(id, name){
+  if(!confirm('هتحذف '+name+'؟')) return;
+  try {
+    await deleteDoc(doc(db,'contractors',id));
+    toast('تم حذف '+name,'ok');
+    await loadUsers();
+  } catch(e){
+    toast('❌ خطأ: '+e.message,'err');
+  }
+};
+
+// ── TOAST ──────────────────────────────────────────
+var tt;
+function toast(msg, type){
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show '+(type||'ok');
+  clearTimeout(tt);
+  tt = setTimeout(function(){ el.classList.remove('show'); }, 3000);
+}
 </script>
 </body>
 </html>
