@@ -500,7 +500,8 @@ loadData();
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, onSnapshot }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCmLfaEb7lPCWaqiQLNRsqWUjuTya4xWF0",
@@ -513,12 +514,29 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+var currentSessionId = null;
 
 function showWelcome(name){
   var msg = document.getElementById('welcomeMsg');
   var span = document.getElementById('welcomeName');
   if(msg && span){ span.textContent = name; msg.style.display = 'block'; }
 }
+
+function watchSession(sessionId){
+  onSnapshot(doc(db,'sessions',sessionId), function(snap){
+    if(!snap.exists()){
+      sessionStorage.clear();
+      alert('⚠️ تم إنهاء جلستك. يرجى تسجيل الدخول مرة أخرى.');
+      location.reload();
+    }
+  });
+}
+
+window.addEventListener('beforeunload', function(){
+  if(currentSessionId){
+    deleteDoc(doc(db,'sessions',currentSessionId)).catch(function(){});
+  }
+});
 
 window.doLogin = async function() {
   var email = document.getElementById('loginEmail').value.trim().toLowerCase();
@@ -541,23 +559,45 @@ window.doLogin = async function() {
       return (d.data().email||'').toLowerCase().trim() === email;
     });
 
-    if(match && match.data().perm_page2 === true){
-      var userName = match.data().name || email;
-      sessionStorage.setItem('auth-supervisor-email', email);
-      sessionStorage.setItem('auth-supervisor-name', userName);
-      document.getElementById('loginScreen').classList.add('hide');
-      showWelcome(userName);
-    } else if(match){
-      errEl.textContent = '❌ مش مصرح ليك بالدخول لصفحة المشرف';
-      errEl.style.display = 'block';
-      btn.disabled = false;
-      btn.innerHTML = 'دخول ←';
-    } else {
+    if(!match){
       errEl.textContent = '❌ الإيميل ده مش موجود في النظام';
       errEl.style.display = 'block';
-      btn.disabled = false;
-      btn.innerHTML = 'دخول ←';
+      btn.disabled = false; btn.innerHTML = 'دخول ←'; return;
     }
+    if(match.data().perm_page2 !== true){
+      errEl.textContent = '❌ مش مصرح ليك بالدخول لصفحة المشرف';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.innerHTML = 'دخول ←'; return;
+    }
+
+    // تحقق لو في session موجودة
+    var sessSnap = await getDocs(collection(db,'sessions'));
+    var existing = sessSnap.docs.find(function(d){
+      return (d.data().email||'').toLowerCase() === email;
+    });
+    if(existing){
+      errEl.textContent = '⚠️ الإيميل ده شغال على جهاز تاني دلوقتي';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.innerHTML = 'دخول ←'; return;
+    }
+
+    var userName = match.data().name || email;
+    var sessionId = email.replace(/[^a-z0-9]/g,'_') + '_' + Date.now();
+    await setDoc(doc(db,'sessions',sessionId),{
+      email: email,
+      name: userName,
+      page: 'supervisor',
+      loginAt: new Date()
+    });
+    currentSessionId = sessionId;
+
+    sessionStorage.setItem('auth-supervisor-email', email);
+    sessionStorage.setItem('auth-supervisor-name', userName);
+    sessionStorage.setItem('auth-supervisor-session-id', sessionId);
+    document.getElementById('loginScreen').classList.add('hide');
+    showWelcome(userName);
+    watchSession(sessionId);
+
   } catch(e) {
     errEl.textContent = '❌ خطأ في الاتصال: ' + e.message;
     errEl.style.display = 'block';
@@ -567,10 +607,14 @@ window.doLogin = async function() {
 };
 
 // لو دخل قبل كده في نفس الجلسة
-if(sessionStorage.getItem('auth-supervisor-email')){
+var savedEmail   = sessionStorage.getItem('auth-supervisor-email');
+var savedName    = sessionStorage.getItem('auth-supervisor-name');
+var savedSession = sessionStorage.getItem('auth-supervisor-session-id');
+if(savedEmail && savedSession){
+  currentSessionId = savedSession;
   document.getElementById('loginScreen').classList.add('hide');
-  var savedName = sessionStorage.getItem('auth-supervisor-name') || sessionStorage.getItem('auth-supervisor-email');
-  showWelcome(savedName);
+  showWelcome(savedName || savedEmail);
+  watchSession(savedSession);
 }
 </script>
 </body>
