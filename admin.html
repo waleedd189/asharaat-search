@@ -159,7 +159,7 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--txt);min-he
 
 <script type="module">
 import { initializeApp }              from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp }
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, updateDoc }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const ADMIN_PASS = 'admin2026';
@@ -218,19 +218,21 @@ function renderUsers(){
   el.innerHTML = allUsers.map(function(u){
     var p1 = u.perm_page1 !== false;
     var p2 = u.perm_page2 === true;
+    var id = u.id.replace(/'/g,"\\'");
+    var nm = (u.name||'').replace(/'/g,"\\'");
     return '<div class="user-item">'
       + '<div class="user-top">'
       + '<div class="user-info">'
-      + '<div class="user-name">'+(u.name||'—')+'</div>'
-      + '<div class="user-email">'+(u.email||'—')+'</div>'
+      + '<div class="user-name">'+(u.name||'\u2014')+'</div>'
+      + '<div class="user-email">'+(u.email||'\u2014')+'</div>'
       + '</div>'
-      + '<button class="btn-del" onclick="delUser(''+u.id+'',''+u.name+'')">🗑 حذف</button>'
+      + '<button class="btn-del" onclick="delUser(\''+id+'\',\''+nm+'\')">&#x1F5D1; حذف</button>'
       + '</div>'
       + '<div class="perm-row">'
-      + '<div class="perm-toggle'+(p1?' active':'')+'" onclick="togglePerm(''+u.id+'','perm_page1','+p1+')">'
-      + '<div class="perm-dot"></div><span class="perm-lbl">🚛 صفحة المقاول</span></div>'
-      + '<div class="perm-toggle'+(p2?' active':'')+'" onclick="togglePerm(''+u.id+'','perm_page2','+p2+')">'
-      + '<div class="perm-dot"></div><span class="perm-lbl">👁 صفحة المشرف</span></div>'
+      + '<div class="perm-toggle'+(p1?' active':'')+'" onclick="togglePerm(\''+id+'\',\'perm_page1\','+p1+')">'
+      + '<div class="perm-dot"></div><span class="perm-lbl">&#x1F69B; صفحة المقاول</span></div>'
+      + '<div class="perm-toggle'+(p2?' active':'')+'" onclick="togglePerm(\''+id+'\',\'perm_page2\','+p2+')">'
+      + '<div class="perm-dot"></div><span class="perm-lbl">&#x1F441; صفحة المشرف</span></div>'
       + '</div>'
       + '</div>';
   }).join('');
@@ -299,7 +301,6 @@ window.delUser = async function(id, name){
 window.togglePerm = async function(id, field, current){
   var newVal = !current;
   try {
-    var { updateDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
     var update = {};
     update[field] = newVal;
     await updateDoc(doc(db,'contractors',id), update);
