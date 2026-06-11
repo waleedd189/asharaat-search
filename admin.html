@@ -51,14 +51,24 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--txt);min-he
 .btn-add:disabled{opacity:0.6;cursor:not-allowed}
 
 /* LIST */
-.user-item{background:rgba(255,255,255,0.03);border:1px solid var(--brd);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;transition:.15s}
+.user-item{background:rgba(255,255,255,0.03);border:1px solid var(--brd);border-radius:14px;padding:13px 16px;margin-bottom:8px;transition:.15s}
 .user-item:hover{background:rgba(255,255,255,0.05)}
+.user-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .user-info{display:flex;flex-direction:column;gap:3px}
 .user-name{font-size:14px;font-weight:700;color:#fff}
 .user-email{font-size:12px;color:#3b82f6;direction:ltr;text-align:right}
 .btn-del{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;border-radius:8px;padding:6px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
 .btn-del:hover{background:rgba(239,68,68,0.2)}
 .empty-list{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+/* PERMISSIONS */
+.perm-row{display:flex;gap:8px;flex-wrap:wrap}
+.perm-toggle{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.04);border:1px solid var(--brd);border-radius:10px;padding:6px 12px;cursor:pointer;transition:.15s;user-select:none}
+.perm-toggle:hover{background:rgba(255,255,255,0.07)}
+.perm-toggle.active{background:rgba(37,99,235,0.15);border-color:#2563eb}
+.perm-toggle.active .perm-dot{background:#3b82f6}
+.perm-dot{width:9px;height:9px;border-radius:50%;background:#1e2d4a;transition:.15s;flex-shrink:0}
+.perm-lbl{font-size:12px;font-weight:700;color:#94a3b8}
+.perm-toggle.active .perm-lbl{color:#93c5fd}
 
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:12px;padding:11px 22px;font-size:13px;font-weight:700;z-index:999;transition:transform .3s ease;white-space:nowrap;pointer-events:none;font-family:'Cairo',sans-serif}
@@ -120,6 +130,16 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--txt);min-he
         <input type="text" class="inp" id="newName" placeholder="الاسم">
         <input type="email" class="inp" id="newEmail" placeholder="example@gmail.com"
           onkeydown="if(event.key==='Enter')addUser()">
+      </div>
+      <div class="perm-row" style="margin-bottom:12px">
+        <div class="perm-toggle active" id="np1" onclick="toggleNewPerm('p1')">
+          <div class="perm-dot"></div>
+          <span class="perm-lbl">🚛 صفحة المقاول</span>
+        </div>
+        <div class="perm-toggle" id="np2" onclick="toggleNewPerm('p2')">
+          <div class="perm-dot"></div>
+          <span class="perm-lbl">👁 صفحة المشرف</span>
+        </div>
       </div>
       <button class="btn-add" id="addBtn" onclick="addUser()">
         ✅ إضافة
@@ -196,12 +216,22 @@ function renderUsers(){
     return;
   }
   el.innerHTML = allUsers.map(function(u){
+    var p1 = u.perm_page1 !== false;
+    var p2 = u.perm_page2 === true;
     return '<div class="user-item">'
+      + '<div class="user-top">'
       + '<div class="user-info">'
       + '<div class="user-name">'+(u.name||'—')+'</div>'
       + '<div class="user-email">'+(u.email||'—')+'</div>'
       + '</div>'
-      + '<button class="btn-del" onclick="delUser(\''+u.id+'\',\''+u.name+'\')">🗑 حذف</button>'
+      + '<button class="btn-del" onclick="delUser(''+u.id+'',''+u.name+'')">🗑 حذف</button>'
+      + '</div>'
+      + '<div class="perm-row">'
+      + '<div class="perm-toggle'+(p1?' active':'')+'" onclick="togglePerm(''+u.id+'','perm_page1','+p1+')">'
+      + '<div class="perm-dot"></div><span class="perm-lbl">🚛 صفحة المقاول</span></div>'
+      + '<div class="perm-toggle'+(p2?' active':'')+'" onclick="togglePerm(''+u.id+'','perm_page2','+p2+')">'
+      + '<div class="perm-dot"></div><span class="perm-lbl">👁 صفحة المشرف</span></div>'
+      + '</div>'
       + '</div>';
   }).join('');
 }
@@ -231,9 +261,15 @@ window.addUser = async function(){
   btn.innerHTML = '<span class="spin"></span> جاري الإضافة...';
 
   try {
+    var newPerms = {
+      perm_page1: document.getElementById('np1').classList.contains('active'),
+      perm_page2: document.getElementById('np2').classList.contains('active')
+    };
     await addDoc(collection(db,'contractors'),{
       name: name,
       email: email,
+      perm_page1: newPerms.perm_page1,
+      perm_page2: newPerms.perm_page2,
       createdAt: serverTimestamp()
     });
     document.getElementById('newName').value  = '';
@@ -257,6 +293,30 @@ window.delUser = async function(id, name){
   } catch(e){
     toast('❌ خطأ: '+e.message,'err');
   }
+};
+
+// ── TOGGLE PERMISSION ──────────────────────────
+window.togglePerm = async function(id, field, current){
+  var newVal = !current;
+  try {
+    var { updateDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    var update = {};
+    update[field] = newVal;
+    await updateDoc(doc(db,'contractors',id), update);
+    // update local
+    var u = allUsers.find(function(x){ return x.id===id; });
+    if(u) u[field] = newVal;
+    renderUsers();
+    toast('✅ تم تحديث الصلاحية', 'ok');
+  } catch(e){
+    toast('❌ خطأ: '+e.message,'err');
+  }
+};
+
+// ── TOGGLE NEW PERM ─────────────────────────────
+window.toggleNewPerm = function(key){
+  var el = document.getElementById('n'+key);
+  if(el) el.classList.toggle('active');
 };
 
 // ── TOAST ──────────────────────────────────────────
