@@ -506,7 +506,7 @@ loadData();
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, getDocs }
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 const firebaseConfig = {
   apiKey: "AIzaSyCmLfaEb7lPCWaqiQLNRsqWUjuTya4xWF0",
@@ -525,6 +525,45 @@ function showWelcome(name){
     span.textContent = name;
     msg.style.display = 'block';
   }
+}
+
+// ── نظام الجلسة الواحدة (Single-Session Lock) ─────
+function newSessionId(){
+  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return Date.now()+'-'+Math.random().toString(36).slice(2);
+}
+
+var heartbeatTimer = null;
+
+function startHeartbeat(docId, sessionId){
+  if(heartbeatTimer) clearInterval(heartbeatTimer);
+  // فحص أول بعد 5 ثوانى، وبعدها كل 20 ثانية
+  var doCheck = async function(){
+    try {
+      var snap = await getDoc(doc(db, 'contractors', docId));
+      if(!snap.exists()) return;
+      var current = snap.data().active_session;
+      if(current && current !== sessionId){
+        // حد تانى دخل بنفس الإيميل → طلعنى
+        clearInterval(heartbeatTimer);
+        heartbeatTimer = null;
+        sessionStorage.clear();
+        alert('⚠️ تم تسجيل الدخول بإيميلك من جهاز آخر\nتم إنهاء جلستك تلقائياً');
+        location.reload();
+      } else {
+        // حدّث آخر ظهور
+        await updateDoc(doc(db, 'contractors', docId), {
+          last_seen: Date.now()
+        });
+      }
+    } catch(e) { /* تجاهل الأخطاء المؤقتة */ }
+  };
+  setTimeout(doCheck, 5000);
+  heartbeatTimer = setInterval(doCheck, 20000);
+}
+
+function stopHeartbeat(){
+  if(heartbeatTimer){ clearInterval(heartbeatTimer); heartbeatTimer = null; }
 }
 // ── تسجيل الدخول (بدون sessions) ──────────────
 window.doLogin = async function() {
@@ -559,10 +598,23 @@ window.doLogin = async function() {
       return;
     }
     var userName = match.data().name || email;
+
+    // ── قفل الجلسة الواحدة ──
+    var sessionId = newSessionId();
+    try {
+      await updateDoc(doc(db, 'contractors', match.id), {
+        active_session: sessionId,
+        last_seen: Date.now()
+      });
+    } catch(e){ /* غير مميت */ }
+
     sessionStorage.setItem('auth-supervisor-email', email);
     sessionStorage.setItem('auth-supervisor-name', userName);
+    sessionStorage.setItem('auth-supervisor-docid', match.id);
+    sessionStorage.setItem('auth-supervisor-sid', sessionId);
     document.getElementById('loginScreen').classList.add('hide');
     showWelcome(userName);
+    startHeartbeat(match.id, sessionId);
   } catch(e) {
     errEl.textContent = '❌ خطأ في الاتصال: ' + e.message;
     errEl.style.display = 'block';
@@ -571,16 +623,33 @@ window.doLogin = async function() {
   }
 };
 // ── تسجيل الخروج ──────────────────────────────
-window.doLogout = function(){
+window.doLogout = async function(){
+  var docId = sessionStorage.getItem('auth-supervisor-docid');
+  var sid   = sessionStorage.getItem('auth-supervisor-sid');
+  stopHeartbeat();
+  if(docId && sid){
+    try {
+      var s = await getDoc(doc(db, 'contractors', docId));
+      // امسح الجلسة النشطة فقط لو لسه بتاعتنا
+      if(s.exists() && s.data().active_session === sid){
+        await updateDoc(doc(db, 'contractors', docId), { active_session: null });
+      }
+    } catch(e){}
+  }
   sessionStorage.clear();
   location.reload();
 };
 // ── لو دخل قبل كده في نفس الجلسة ─────────────
 var savedEmail = sessionStorage.getItem('auth-supervisor-email');
 var savedName  = sessionStorage.getItem('auth-supervisor-name');
+var savedDocId = sessionStorage.getItem('auth-supervisor-docid');
+var savedSid   = sessionStorage.getItem('auth-supervisor-sid');
 if(savedEmail){
   document.getElementById('loginScreen').classList.add('hide');
   showWelcome(savedName || savedEmail);
+  if(savedDocId && savedSid){
+    startHeartbeat(savedDocId, savedSid);
+  }
 }
 </script>
 </body>
